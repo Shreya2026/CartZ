@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CartZ - Premium E-commerce Store</title>
+    <meta name="description" content="Discover amazing products at CartZ - Your premium online shopping destination with the best deals and fastest delivery." />
+    <meta name="keywords" content="ecommerce, online shopping, fashion, electronics, deals, discounts" />
+    <meta name="author" content="CartZ Team" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://cartz.com/" />
+    <meta property="og:title" content="CartZ - Premium E-commerce Store" />
+    <meta property="og:description" content="Discover amazing products at CartZ - Your premium online shopping destination with the best deals and fastest delivery." />
+    <meta property="og:image" content="/og-image.jpg" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://cartz.com/" />
+    <meta property="twitter:title" content="CartZ - Premium E-commerce Store" />
+    <meta property="twitter:description" content="Discover amazing products at CartZ - Your premium online shopping destination with the best deals and fastest delivery." />
+    <meta property="twitter:image" content="/og-image.jpg" />
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    
+    <!-- Preconnect to external domains -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- DNS prefetch -->
+    <link rel="dns-prefetch" href="//api.cartz.com">
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800;900&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800;900&display=swap">
+    
+    <!-- Critical CSS inline (would be added by build process) -->
+    <style>
+      /* Loading screen styles */
+      #initial-loader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        opacity: 1;
+        transition: opacity 0.5s ease-out;
+      }
+      
+      #initial-loader.fade-out {
+        opacity: 0;
+        pointer-events: none;
+      }
+      
+      .loader-content {
+        text-align: center;
+        color: white;
+      }
+      
+      .loader-logo {
+        font-size: 3rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+        background: linear-gradient(45deg, #fff, #f0f0f0);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      
+      .loader-spinner {
+        width: 50px;
+        height: 50px;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top-color: white;
+        animation: spin 1s ease-in-out infinite;
+        margin: 0 auto;
+      }
+      
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+      
+      /* Hide scrollbar during loading */
+      body.loading {
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body class="loading">
+    <!-- Initial loading screen -->
+    <div id="initial-loader">
+      <div class="loader-content">
+        <div class="loader-logo">CartZ</div>
+        <div class="loader-spinner"></div>
+        <p style="margin-top: 1rem; opacity: 0.9;">Loading your shopping experience...</p>
+      </div>
+    </div>
+    
+    <!-- Main app container -->
+    <div id="root"></div>
+    
+    <!-- Loading script -->
+    <script>
+      // Remove loading screen when page is fully loaded
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          const loader = document.getElementById('initial-loader');
+          const body = document.body;
+          
+          if (loader) {
+            loader.classList.add('fade-out');
+            body.classList.remove('loading');
+            
+            setTimeout(() => {
+              loader.remove();
+            }, 500);
+          }
+        }, 1000); // Show loader for at least 1 second
+      });
+      
+      // Fallback - remove loader after 5 seconds
+      setTimeout(() => {
+        const loader = document.getElementById('initial-loader');
+        const body = document.body;
+        
+        if (loader) {
+          loader.classList.add('fade-out');
+          body.classList.remove('loading');
+          
+          setTimeout(() => {
+            loader.remove();
+          }, 500);
+        }
+      }, 5000);
+    </script>
+    
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
