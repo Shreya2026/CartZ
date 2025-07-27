@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaPlus, FaMinus, FaTrash, FaShoppingBag, FaArrowLeft } from 'react-icons/fa';
 import { updateQuantity, removeFromCart, clearCart } from '../store/slices/cartSlice';
 
 const CartPage = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { items, totalAmount, totalItems } = useSelector((state) => state.cart);
   const { user } = useSelector((state) => state.auth);
@@ -26,8 +27,7 @@ const CartPage = () => {
   };
 
   const handleCheckout = () => {
-    // TODO: Integrate with payment processing
-    console.log('Proceeding to checkout...');
+    navigate('/checkout');
   };
 
   if (items.length === 0) {

@@ -18,7 +18,7 @@ const ProductsPage = () => {
   // Mock data - replace with API call
   const mockProducts = [
     {
-      _id: '1',
+      _id: '507f1f77bcf86cd799439011',
       name: 'Premium Wireless Headphones',
       price: 299.99,
       originalPrice: 399.99,
@@ -33,7 +33,7 @@ const ProductsPage = () => {
       description: 'High-quality wireless headphones with noise cancellation'
     },
     {
-      _id: '2',
+      _id: '507f1f77bcf86cd799439012',
       name: 'Smart Fitness Watch',
       price: 199.99,
       originalPrice: 249.99,
@@ -48,7 +48,7 @@ const ProductsPage = () => {
       description: 'Advanced fitness tracking with heart rate monitoring'
     },
     {
-      _id: '3',
+      _id: '507f1f77bcf86cd799439013',
       name: 'Designer Leather Jacket',
       price: 449.99,
       originalPrice: null,
@@ -63,7 +63,7 @@ const ProductsPage = () => {
       description: 'Premium leather jacket with modern design'
     },
     {
-      _id: '4',
+      _id: '507f1f77bcf86cd799439014',
       name: 'Organic Coffee Beans',
       price: 24.99,
       originalPrice: 29.99,
@@ -78,7 +78,7 @@ const ProductsPage = () => {
       description: 'Single-origin organic coffee beans, medium roast'
     },
     {
-      _id: '5',
+      _id: '507f1f77bcf86cd799439015',
       name: 'Yoga Mat Pro',
       price: 89.99,
       originalPrice: null,
@@ -93,7 +93,7 @@ const ProductsPage = () => {
       description: 'Professional-grade yoga mat with superior grip'
     },
     {
-      _id: '6',
+      _id: '507f1f77bcf86cd799439016',
       name: 'Wireless Gaming Mouse',
       price: 79.99,
       originalPrice: 99.99,

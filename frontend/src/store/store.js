@@ -6,6 +6,7 @@ import categoriesSlice from './slices/categoriesSlice'
 import ordersSlice from './slices/ordersSlice'
 import wishlistSlice from './slices/wishlistSlice'
 import uiSlice from './slices/uiSlice'
+import checkoutSlice from './slices/checkoutSlice'
 
 export const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ export const store = configureStore({
     orders: ordersSlice,
     wishlist: wishlistSlice,
     ui: uiSlice,
+    checkout: checkoutSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
