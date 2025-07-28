@@ -143,7 +143,7 @@ function App() {
                     } 
                   />
                   <Route 
-                    path="/products/:slug" 
+                    path="/products/:id" 
                     element={
                       <AnimatedPage>
                         <ProductDetailPage />

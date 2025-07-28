@@ -11,6 +11,7 @@ import { HeartIcon as HeartSolidIcon } from '@heroicons/react/24/solid'
 import { useDispatch, useSelector } from 'react-redux'
 import { addToCart } from '../../store/slices/cartSlice'
 import { toggleWishlistItem } from '../../store/slices/wishlistSlice'
+import { formatCurrency } from '../../utils/helpers'
 
 const ProductCard = ({ product, viewMode = 'grid' }) => {
   const dispatch = useDispatch()
@@ -19,10 +20,16 @@ const ProductCard = ({ product, viewMode = 'grid' }) => {
   const [isAddingToCart, setIsAddingToCart] = useState(false)
 
   const isInWishlist = wishlistItems.some(item => item._id === product._id)
+  
+  // Helper function to check if product is in stock
+  const isInStock = product.stock > 0 || product.inStock === true
 
   const handleAddToCart = async (e) => {
     e.preventDefault()
     e.stopPropagation()
+    
+    if (!isInStock || isAddingToCart) return
+    
     setIsAddingToCart(true)
     console.log('Product being added to cart:', product)
     console.log('Product images:', product.images)
@@ -89,7 +96,7 @@ const ProductCard = ({ product, viewMode = 'grid' }) => {
               {/* Image */}
               <div className="relative w-48 h-48 overflow-hidden bg-gradient-to-br from-purple-50 to-pink-50 flex-shrink-0">
                 <img
-                  src={product.images?.[0] || '/placeholder-product.jpg'}
+                  src={product.images?.[0]?.url || product.images?.[0] || '/placeholder-product.jpg'}
                   alt={product.name}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
@@ -114,7 +121,7 @@ const ProductCard = ({ product, viewMode = 'grid' }) => {
                 <div>
                   <div className="flex items-start justify-between mb-2">
                     <p className="text-sm text-purple-600 font-medium uppercase tracking-wider">
-                      {product.category} • {product.brand}
+                      {typeof product.category === 'object' ? product.category?.name : product.category} • {product.brand}
                     </p>
                     <button
                       onClick={handleToggleWishlist}
@@ -151,27 +158,27 @@ const ProductCard = ({ product, viewMode = 'grid' }) => {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <span className="text-2xl font-bold text-gray-900">
-                      ${product.price?.toFixed(2)}
+                      {formatCurrency(product.price)}
                     </span>
                     {product.originalPrice && product.originalPrice > product.price && (
                       <span className="text-lg text-gray-500 line-through">
-                        ${product.originalPrice.toFixed(2)}
+                        {formatCurrency(product.originalPrice)}
                       </span>
                     )}
                   </div>
                   
                   <button
                     onClick={handleAddToCart}
-                    disabled={isAddingToCart || !product.inStock}
+                    disabled={isAddingToCart || !isInStock}
                     className={`px-6 py-2 rounded-lg font-semibold transition-all duration-300 ${
-                      !product.inStock
+                      !isInStock
                         ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
                         : isAddingToCart
                         ? 'bg-green-500 text-white'
                         : 'bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:from-purple-700 hover:to-pink-700'
                     }`}
                   >
-                    {!product.inStock ? 'Out of Stock' : isAddingToCart ? 'Added!' : 'Add to Cart'}
+                    {!isInStock ? 'Out of Stock' : isAddingToCart ? 'Added!' : 'Add to Cart'}
                   </button>
                 </div>
               </div>
@@ -198,7 +205,7 @@ const ProductCard = ({ product, viewMode = 'grid' }) => {
           {/* Image Container */}
           <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-purple-50 to-pink-50">
             <img
-              src={product.images?.[0] || '/placeholder-product.jpg'}
+              src={product.images?.[0]?.url || product.images?.[0] || '/placeholder-product.jpg'}
               alt={product.name}
               className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
             />
@@ -266,16 +273,16 @@ const ProductCard = ({ product, viewMode = 'grid' }) => {
             >
               <button
                 onClick={handleAddToCart}
-                disabled={isAddingToCart || !product.inStock}
+                disabled={isAddingToCart || !isInStock}
                 className={`w-full py-3 rounded-xl font-semibold text-white shadow-lg backdrop-blur-sm transition-all duration-300 ${
-                  !product.inStock
+                  !isInStock
                     ? 'bg-gray-400 cursor-not-allowed'
                     : isAddingToCart
                     ? 'bg-green-500'
                     : 'bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700'
                 }`}
               >
-                {!product.inStock ? (
+                {!isInStock ? (
                   'Out of Stock'
                 ) : isAddingToCart ? (
                   <div className="flex items-center justify-center gap-2">
@@ -295,7 +302,7 @@ const ProductCard = ({ product, viewMode = 'grid' }) => {
           {/* Content */}
           <div className="p-6">
             <p className="text-sm text-purple-600 font-medium mb-2 uppercase tracking-wider">
-              {product.category}
+              {typeof product.category === 'object' ? product.category?.name : product.category}
             </p>
             
             <h3 className="text-lg font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-purple-600 transition-colors duration-300">
@@ -314,23 +321,23 @@ const ProductCard = ({ product, viewMode = 'grid' }) => {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <span className="text-2xl font-bold text-gray-900">
-                  ${product.price?.toFixed(2)}
+                  {formatCurrency(product.price)}
                 </span>
                 {product.originalPrice && product.originalPrice > product.price && (
                   <span className="text-lg text-gray-500 line-through">
-                    ${product.originalPrice.toFixed(2)}
+                    {formatCurrency(product.originalPrice)}
                   </span>
                 )}
               </div>
               
               <div className="flex items-center gap-1">
                 <div className={`w-2 h-2 rounded-full ${
-                  product.inStock ? 'bg-green-500' : 'bg-red-500'
+                  isInStock ? 'bg-green-500' : 'bg-red-500'
                 }`} />
                 <span className={`text-xs font-medium ${
-                  product.inStock ? 'text-green-600' : 'text-red-600'
+                  isInStock ? 'text-green-600' : 'text-red-600'
                 }`}>
-                  {product.inStock ? 'In Stock' : 'Out of Stock'}
+                  {isInStock ? 'In Stock' : 'Out of Stock'}
                 </span>
               </div>
             </div>

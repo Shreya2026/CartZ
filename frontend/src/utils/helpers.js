@@ -1,6 +1,6 @@
 // Format currency
-export const formatCurrency = (amount, currency = 'USD') => {
-  return new Intl.NumberFormat('en-US', {
+export const formatCurrency = (amount, currency = 'INR') => {
+  return new Intl.NumberFormat('en-IN', {
     style: 'currency',
     currency,
     minimumFractionDigits: 2,
@@ -8,12 +8,12 @@ export const formatCurrency = (amount, currency = 'USD') => {
   }).format(amount)
 }
 
-// Format number with commas
+// Format number with commas (Indian system)
 export const formatNumber = (number) => {
-  return new Intl.NumberFormat('en-US').format(number)
+  return new Intl.NumberFormat('en-IN').format(number)
 }
 
-// Format date
+// Format date (Indian format)
 export const formatDate = (date, options = {}) => {
   const defaultOptions = {
     year: 'numeric',
@@ -22,7 +22,7 @@ export const formatDate = (date, options = {}) => {
     ...options,
   }
   
-  return new Intl.DateTimeFormat('en-US', defaultOptions).format(new Date(date))
+  return new Intl.DateTimeFormat('en-IN', defaultOptions).format(new Date(date))
 }
 
 // Format relative time

@@ -186,7 +186,7 @@ productSchema.pre('save', function(next) {
 
 // Virtual for average rating
 productSchema.virtual('averageRating').get(function() {
-  if (this.reviews.length === 0) return 0;
+  if (!this.reviews || this.reviews.length === 0) return 0;
   const sum = this.reviews.reduce((acc, review) => acc + review.rating, 0);
   return (sum / this.reviews.length).toFixed(1);
 });
@@ -208,7 +208,7 @@ productSchema.virtual('discountedPrice').get(function() {
 
 // Update rating when reviews change
 productSchema.methods.updateRating = function() {
-  if (this.reviews.length === 0) {
+  if (!this.reviews || this.reviews.length === 0) {
     this.rating = 0;
     this.numReviews = 0;
   } else {

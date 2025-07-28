@@ -62,25 +62,25 @@ export const categoryAPI = {
 export const orderAPI = {
   // Create new order
   createOrder: async (orderData) => {
-    const response = await api.post('/api/orders', orderData)
+    const response = await api.post('/orders', orderData)
     return response.data
   },
 
   // Get user orders
   getUserOrders: async (params = {}) => {
-    const response = await api.get('/api/orders/myorders', { params })
+    const response = await api.get('/orders/myorders', { params })
     return response.data
   },
 
   // Get single order
   getOrder: async (id) => {
-    const response = await api.get(`/api/orders/${id}`)
+    const response = await api.get(`/orders/${id}`)
     return response.data
   },
 
   // Cancel order
   cancelOrder: async (id, reason) => {
-    const response = await api.put(`/api/orders/${id}/cancel`, { reason })
+    const response = await api.put(`/orders/${id}/cancel`, { reason })
     return response.data
   },
 }

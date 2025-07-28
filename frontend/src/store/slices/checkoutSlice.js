@@ -118,7 +118,7 @@ const checkoutSlice = createSlice({
       })
       .addCase(processCheckout.fulfilled, (state, action) => {
         state.processing = false
-        state.currentOrder = action.payload
+        state.currentOrder = action.payload.data || action.payload
         state.step = 'complete'
       })
       .addCase(processCheckout.rejected, (state, action) => {

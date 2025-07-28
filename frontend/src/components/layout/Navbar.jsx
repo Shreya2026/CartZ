@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -18,6 +18,7 @@ import { selectCartItemsCount } from '../../store/slices/cartSlice'
 import { setMobileMenuOpen, selectMobileMenuOpen } from '../../store/slices/uiSlice'
 import { selectWishlistItems } from '../../store/slices/wishlistSlice'
 import Avatar from '../ui/Avatar'
+import productsAPI from '../../services/productsAPI'
 
 const Navbar = () => {
   const location = useLocation()
@@ -31,6 +32,34 @@ const Navbar = () => {
   const cartItemsCount = useSelector(selectCartItemsCount)
   const wishlistItems = useSelector(selectWishlistItems)
   const mobileMenuOpen = useSelector(selectMobileMenuOpen)
+
+  // Dynamic categories from API
+  const [categories, setCategories] = useState([])
+
+  // Load categories on component mount
+  useEffect(() => {
+    loadCategories()
+  }, [])
+
+  const loadCategories = async () => {
+    try {
+      const response = await productsAPI.getCategories()
+      if (response.success && response.categories) {
+        setCategories(response.categories)
+      }
+    } catch (error) {
+      console.error('Error loading categories:', error)
+      // Fallback to hardcoded categories if API fails
+      setCategories([
+        { _id: '1', name: 'Electronics' },
+        { _id: '2', name: 'Fashion' },
+        { _id: '3', name: 'Home & Garden' },
+        { _id: '4', name: 'Sports' },
+        { _id: '5', name: 'Books' },
+        { _id: '6', name: 'Beauty' },
+      ])
+    }
+  }
 
   const handleSearch = (e) => {
     e.preventDefault()
@@ -51,15 +80,6 @@ const Navbar = () => {
     { name: 'Products', href: '/products', current: location.pathname === '/products' },
     { name: 'About', href: '/about', current: location.pathname === '/about' },
     { name: 'Contact', href: '/contact', current: location.pathname === '/contact' },
-  ]
-
-  const categories = [
-    'Electronics',
-    'Fashion',
-    'Home & Garden',
-    'Sports',
-    'Books',
-    'Beauty',
   ]
 
   return (
@@ -145,12 +165,12 @@ const Navbar = () => {
                     >
                       {categories.map((category) => (
                         <Link
-                          key={category}
-                          to={`/products?category=${encodeURIComponent(category)}`}
+                          key={category._id}
+                          to={`/products?category=${category._id}`}
                           onClick={() => setCategoriesOpen(false)}
                           className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-primary-600 transition-colors duration-150"
                         >
-                          {category}
+                          {category.name}
                         </Link>
                       ))}
                     </motion.div>
@@ -339,12 +359,12 @@ const Navbar = () => {
                   </p>
                   {categories.map((category) => (
                     <Link
-                      key={category}
-                      to={`/products?category=${encodeURIComponent(category)}`}
+                      key={category._id}
+                      to={`/products?category=${category._id}`}
                       onClick={() => dispatch(setMobileMenuOpen(false))}
                       className="block px-3 py-2 text-gray-700 hover:text-primary-600 hover:bg-gray-50 rounded-md transition-colors duration-200"
                     >
-                      {category}
+                      {category.name}
                     </Link>
                   ))}
                 </div>

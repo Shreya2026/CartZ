@@ -19,7 +19,13 @@ router.get('/', optionalAuth, async (req, res) => {
 
     // Search by keyword
     if (req.query.keyword) {
-      query.$text = { $search: req.query.keyword };
+      const keyword = req.query.keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // Escape special regex chars
+      query.$or = [
+        { name: { $regex: keyword, $options: 'i' } },
+        { description: { $regex: keyword, $options: 'i' } },
+        { brand: { $regex: keyword, $options: 'i' } },
+        { tags: { $elemMatch: { $regex: keyword, $options: 'i' } } }
+      ];
     }
 
     // Filter by category

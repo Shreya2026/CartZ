@@ -19,7 +19,7 @@ const HomePage = () => {
     {
       icon: TruckIcon,
       title: 'Free Shipping',
-      description: 'Free shipping on orders over $100',
+      description: 'Free shipping on orders over ₹2,000',
       gradient: 'from-blue-500 to-cyan-500',
     },
     {

@@ -92,7 +92,7 @@ const cartSlice = createSlice({
           slug: product.slug,
           price: product.price,
           originalPrice: product.originalPrice,
-          image: product.images?.[0] || '/placeholder-product.jpg',
+          image: product.images?.[0]?.url || product.images?.[0] || '/placeholder-product.jpg',
           quantity,
           selectedVariant,
           stock: product.stock,

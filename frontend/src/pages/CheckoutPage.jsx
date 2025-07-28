@@ -32,6 +32,7 @@ import {
   selectCheckoutProcessing,
   selectCheckoutError,
 } from '../store/slices/checkoutSlice';
+import { formatCurrency } from '../utils/helpers';
 
 import { selectCartItems, selectCartTotal, selectCartItemsCount, clearCart } from '../store/slices/cartSlice';
 
@@ -59,6 +60,7 @@ const CheckoutPage = () => {
     fullName: shippingAddress.fullName || '',
     address: shippingAddress.address || '',
     city: shippingAddress.city || '',
+    state: shippingAddress.state || '',
     postalCode: shippingAddress.postalCode || '',
     country: shippingAddress.country || '',
     phone: shippingAddress.phone || '',
@@ -71,29 +73,35 @@ const CheckoutPage = () => {
     nameOnCard: '',
   });
 
+  // Initial setup effect - runs once on mount
   useEffect(() => {
-    // Redirect if cart is empty
-    if (cartItems.length === 0) {
+    // Only reset checkout state if we're starting fresh (not on complete step)
+    // This prevents resetting state when user refreshes on order confirmation page
+    if (currentStep !== 'complete' && !currentOrder) {
+      dispatch(resetCheckout());
+    }
+  }, []); // Empty dependency array - runs only once
+
+  // Cart empty redirect effect - but exclude when order is complete
+  useEffect(() => {
+    // Redirect if cart is empty, but not if we're on the complete step or have an order
+    if (cartItems.length === 0 && currentStep !== 'complete' && !currentOrder) {
       navigate('/cart');
       return;
     }
+  }, [cartItems.length, currentStep, currentOrder, navigate]);
 
-    // Use cart items from Redux store instead of fetching from backend
-    // dispatch(getCheckoutSession());
-
-    // Cleanup on unmount only
-    return () => {
-      // Only reset if we're not on the complete step
-      // This will only run on unmount, not on re-renders
-    };
-  }, [dispatch, cartItems.length, navigate]);
-
+  // Clear cart after user sees confirmation (delayed)
   useEffect(() => {
-    // Clear cart after successful order
-    if (currentOrder) {
-      dispatch(clearCart());
+    if (currentOrder && currentStep === 'complete') {
+      // Delay cart clearing to allow user to see confirmation
+      const timeoutId = setTimeout(() => {
+        dispatch(clearCart());
+      }, 100); // Small delay to ensure state is stable
+
+      return () => clearTimeout(timeoutId);
     }
-  }, [currentOrder, dispatch]);
+  }, [currentOrder, currentStep, dispatch]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -164,14 +172,14 @@ const CheckoutPage = () => {
   };
 
   const handlePlaceOrder = async () => {
-    const taxPrice = cartTotal * 0.08;
-    let shippingPrice = cartTotal > 100 ? 0 : 10; // Free shipping over $100
+    const gstPrice = cartTotal * 0.18; // 18% GST
+    let shippingPrice = cartTotal > 2000 ? 0 : 50; // Free shipping over ₹2000
     
     // Add COD charges if payment method is COD
-    const codCharges = paymentMethod === 'cod' ? (cartTotal > 500 ? 0 : 40) : 0;
+    const codCharges = paymentMethod === 'cod' ? (cartTotal > 1000 ? 0 : 40) : 0;
     shippingPrice += codCharges;
     
-    const totalPrice = cartTotal + taxPrice + shippingPrice;
+    const totalPrice = cartTotal + gstPrice + shippingPrice;
 
     console.log('=== CHECKOUT DEBUG INFO ===');
     console.log('Cart items:', cartItems);
@@ -191,13 +199,14 @@ const CheckoutPage = () => {
         fullName: formData.fullName,
         address: formData.address,
         city: formData.city,
+        state: formData.state,
         postalCode: formData.postalCode,
         country: formData.country,
         phone: formData.phone,
       },
       paymentMethod,
       itemsPrice: cartTotal,
-      taxPrice: taxPrice,
+      gstPrice: gstPrice,
       shippingPrice: shippingPrice,
       totalPrice: totalPrice,
       paymentResult: paymentMethod === 'card' ? {
@@ -267,7 +276,7 @@ const CheckoutPage = () => {
                   </div>
                   <div className="flex justify-between">
                     <span>Total Amount:</span>
-                    <span className="font-semibold">${currentOrder.totalPrice}</span>
+                    <span className="font-semibold">{formatCurrency(currentOrder.totalPrice)}</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Status:</span>
@@ -390,6 +399,17 @@ const CheckoutPage = () => {
                             type="text"
                             name="city"
                             value={formData.city}
+                            onChange={handleInputChange}
+                            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                            required
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">State</label>
+                          <input
+                            type="text"
+                            name="state"
+                            value={formData.state}
                             onChange={handleInputChange}
                             className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                             required
@@ -628,7 +648,7 @@ const CheckoutPage = () => {
                       <div className="text-sm text-gray-600">
                         <p>{formData.fullName}</p>
                         <p>{formData.address}</p>
-                        <p>{formData.city}, {formData.postalCode}</p>
+                        <p>{formData.city}, {formData.state} {formData.postalCode}</p>
                         <p>{formData.country}</p>
                         <p>{formData.phone}</p>
                       </div>
@@ -656,18 +676,18 @@ const CheckoutPage = () => {
                     <div className="mb-6">
                       <h3 className="font-medium text-gray-900 mb-2">Order Items</h3>
                       <div className="space-y-3">
-                        {cart?.items?.map((item) => (
-                          <div key={item._id} className="flex items-center space-x-3">
+                        {cartItems?.map((item) => (
+                          <div key={item.id} className="flex items-center space-x-3">
                             <img
-                              src={item.product.images?.[0] || '/placeholder-product.jpg'}
-                              alt={item.product.name}
+                              src={item.image || '/placeholder-product.jpg'}
+                              alt={item.name}
                               className="w-12 h-12 object-cover rounded"
                             />
                             <div className="flex-1">
-                              <p className="text-sm font-medium">{item.product.name}</p>
+                              <p className="text-sm font-medium">{item.name}</p>
                               <p className="text-xs text-gray-500">Qty: {item.quantity}</p>
                             </div>
-                            <p className="text-sm font-medium">${(item.price * item.quantity).toFixed(2)}</p>
+                            <p className="text-sm font-medium">{formatCurrency(item.price * item.quantity)}</p>
                           </div>
                         ))}
                       </div>
@@ -717,7 +737,7 @@ const CheckoutPage = () => {
                         <span className="text-gray-600">
                           {item.name} × {item.quantity}
                         </span>
-                        <span className="font-medium">${(item.price * item.quantity).toFixed(2)}</span>
+                        <span className="font-medium">{formatCurrency(item.price * item.quantity)}</span>
                       </div>
                     ))}
                   </div>
@@ -726,19 +746,19 @@ const CheckoutPage = () => {
                 <div className="space-y-2 py-4 border-t border-gray-200">
                   <div className="flex justify-between text-sm">
                     <span className="text-gray-600">Subtotal</span>
-                    <span>${cartTotal?.toFixed(2) || '0.00'}</span>
+                    <span>{formatCurrency(cartTotal) || '₹0.00'}</span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-gray-600">Shipping</span>
                     <span className="text-green-600">Free</span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-600">Tax</span>
-                    <span>${(cartTotal * 0.08)?.toFixed(2) || '0.00'}</span>
+                    <span className="text-gray-600">GST (18%)</span>
+                    <span>{formatCurrency(cartTotal * 0.18) || '₹0.00'}</span>
                   </div>
                   <div className="flex justify-between text-lg font-bold pt-2 border-t border-gray-200">
                     <span>Total</span>
-                    <span className="text-indigo-600">${(cartTotal + cartTotal * 0.08)?.toFixed(2) || '0.00'}</span>
+                    <span className="text-indigo-600">{formatCurrency(cartTotal + cartTotal * 0.18) || '₹0.00'}</span>
                   </div>
                 </div>
 

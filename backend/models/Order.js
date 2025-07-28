@@ -39,8 +39,7 @@ const orderSchema = new mongoose.Schema({
   },
   orderNumber: {
     type: String,
-    unique: true,
-    required: true
+    unique: true
   },
   items: [orderItemSchema],
   shippingAddress: {
@@ -79,11 +78,11 @@ const orderSchema = new mongoose.Schema({
     required: true,
     min: [0, 'Items price cannot be negative']
   },
-  taxPrice: {
+  gstPrice: {
     type: Number,
     required: true,
     default: 0,
-    min: [0, 'Tax price cannot be negative']
+    min: [0, 'GST price cannot be negative']
   },
   shippingPrice: {
     type: Number,

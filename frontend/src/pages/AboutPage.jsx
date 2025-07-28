@@ -14,10 +14,10 @@ import {
 
 const AboutPage = () => {
   const stats = [
-    { label: 'Happy Customers', value: '50K+', icon: UserGroupIcon },
-    { label: 'Products Available', value: '10K+', icon: ShoppingBagIcon },
-    { label: 'Countries Served', value: '25+', icon: GlobeAltIcon },
-    { label: 'Years of Experience', value: '5+', icon: StarIcon },
+    { label: 'Happy Customers', value: '5L+', icon: UserGroupIcon },
+    { label: 'Products Available', value: '50K+', icon: ShoppingBagIcon },
+    { label: 'Cities Served', value: '200+', icon: GlobeAltIcon },
+    { label: 'Years of Excellence', value: '8+', icon: StarIcon },
   ]
 
   const values = [
@@ -45,22 +45,40 @@ const AboutPage = () => {
 
   const team = [
     {
-      name: 'Sarah Johnson',
+      name: 'Rajesh Sharma',
       role: 'CEO & Founder',
-      image: 'https://randomuser.me/api/portraits/women/44.jpg',
-      description: 'Visionary leader with 10+ years in e-commerce.'
+      image: 'https://ui-avatars.com/api/?name=Rajesh+Sharma&background=3b82f6&color=fff&size=128',
+      description: 'Visionary entrepreneur with 15+ years in Indian e-commerce. IIT Delhi alumnus.'
     },
     {
-      name: 'Michael Chen',
+      name: 'Priya Patel',
       role: 'CTO',
-      image: 'https://randomuser.me/api/portraits/men/32.jpg',
-      description: 'Tech innovator focused on seamless user experiences.'
+      image: 'https://ui-avatars.com/api/?name=Priya+Patel&background=8b5cf6&color=fff&size=128',
+      description: 'Tech innovator from IIT Bombay, leading India\'s digital transformation in retail.'
     },
     {
-      name: 'Emily Rodriguez',
+      name: 'Arjun Gupta',
+      role: 'COO',
+      image: 'https://ui-avatars.com/api/?name=Arjun+Gupta&background=10b981&color=fff&size=128',
+      description: 'Operations expert ensuring seamless delivery across India. Former McKinsey consultant.'
+    },
+    {
+      name: 'Sneha Reddy',
       role: 'Head of Design',
-      image: 'https://randomuser.me/api/portraits/women/68.jpg',
-      description: 'Creative mind behind our beautiful and intuitive designs.'
+      image: 'https://ui-avatars.com/api/?name=Sneha+Reddy&background=f59e0b&color=fff&size=128',
+      description: 'Award-winning designer creating beautiful experiences for Indian customers.'
+    },
+    {
+      name: 'Vikram Singh',
+      role: 'Head of Marketing',
+      image: 'https://ui-avatars.com/api/?name=Vikram+Singh&background=ef4444&color=fff&size=128',
+      description: 'Marketing strategist with deep understanding of Indian consumer behavior.'
+    },
+    {
+      name: 'Kavya Menon',
+      role: 'Head of Customer Success',
+      image: 'https://ui-avatars.com/api/?name=Kavya+Menon&background=6366f1&color=fff&size=128',
+      description: 'Customer advocate ensuring exceptional service across all Indian languages.'
     }
   ]
 
@@ -88,8 +106,8 @@ const AboutPage = () => {
                 </span>
               </h1>
               <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                Redefining online shopping with premium products, exceptional service, 
-                and innovative technology since 2019.
+                Redefining online shopping in India with premium products, exceptional service, 
+                and innovative technology since 2016. Made in India, for India.
               </p>
             </motion.div>
           </div>
@@ -147,18 +165,22 @@ const AboutPage = () => {
               <div className="prose prose-lg max-w-none text-gray-600">
                 <p className="text-xl leading-relaxed mb-6">
                   CartZ began with a simple vision: to create the most delightful and trustworthy 
-                  online shopping experience. Founded in 2019 by a team of passionate entrepreneurs, 
-                  we recognized the need for a platform that truly puts customers first.
+                  online shopping experience for Indian customers. Founded in 2016 by a team of 
+                  passionate Indian entrepreneurs from IIT and IIM, we recognized the unique needs 
+                  of Indian consumers and the potential of India's growing digital economy.
                 </p>
                 <p className="text-lg leading-relaxed mb-6">
-                  What started as a small startup with big dreams has grown into a thriving 
-                  e-commerce platform serving customers across 25+ countries. We've built our 
-                  reputation on three core principles: quality, innovation, and exceptional service.
+                  What started as a small startup in Bangalore with big dreams has grown into 
+                  India's premier e-commerce platform, serving customers across 200+ cities 
+                  from Kashmir to Kanyakumari. We've built our reputation on three core principles: 
+                  quality products, innovative technology, and exceptional customer service 
+                  tailored for Indian families.
                 </p>
                 <p className="text-lg leading-relaxed">
-                  Today, CartZ continues to evolve, embracing new technologies and expanding our 
-                  product range while never losing sight of our founding mission: making online 
-                  shopping a joy, not a chore.
+                  Today, CartZ continues to lead India's digital commerce revolution, embracing 
+                  cutting-edge technologies like AI and machine learning while supporting local 
+                  artisans and 'Make in India' initiatives. Our mission remains unchanged: 
+                  making online shopping accessible, affordable, and delightful for every Indian.
                 </p>
               </div>
             </motion.div>
@@ -222,7 +244,7 @@ const AboutPage = () => {
               </p>
             </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {team.map((member, index) => (
                 <motion.div
                   key={member.name}
@@ -268,7 +290,7 @@ const AboutPage = () => {
                 Ready to Experience CartZ?
               </h2>
               <p className="text-xl text-blue-100 mb-8 leading-relaxed">
-                Join thousands of satisfied customers and discover why CartZ is the future of online shopping.
+                Join lakhs of satisfied customers across India and discover why CartZ is revolutionizing online shopping in Bharat.
               </p>
               <motion.button
                 whileHover={{ scale: 1.05 }}

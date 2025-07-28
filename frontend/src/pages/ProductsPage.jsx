@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { motion, AnimatePresence } from 'framer-motion'
 import { 
@@ -13,162 +14,198 @@ import {
 } from '@heroicons/react/24/outline'
 import ProductCard from '../components/products/ProductCard_new'
 import LoadingSpinner from '../components/ui/LoadingSpinner'
+import productsAPI from '../services/productsAPI'
 
 const ProductsPage = () => {
-  // Mock data - replace with API call
-  const mockProducts = [
-    {
-      _id: '507f1f77bcf86cd799439011',
-      name: 'Premium Wireless Headphones',
-      price: 299.99,
-      originalPrice: 399.99,
-      rating: 4.8,
-      numReviews: 256,
-      category: 'Electronics',
-      brand: 'AudioMax',
-      inStock: true,
-      isNew: true,
-      isSale: true,
-      images: ['https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'],
-      description: 'High-quality wireless headphones with noise cancellation'
-    },
-    {
-      _id: '507f1f77bcf86cd799439012',
-      name: 'Smart Fitness Watch',
-      price: 199.99,
-      originalPrice: 249.99,
-      rating: 4.5,
-      numReviews: 189,
-      category: 'Electronics',
-      brand: 'FitTech',
-      inStock: true,
-      isNew: false,
-      isSale: true,
-      images: ['https://images.unsplash.com/photo-1544117519-31a4b719223d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'],
-      description: 'Advanced fitness tracking with heart rate monitoring'
-    },
-    {
-      _id: '507f1f77bcf86cd799439013',
-      name: 'Designer Leather Jacket',
-      price: 449.99,
-      originalPrice: null,
-      rating: 4.9,
-      numReviews: 124,
-      category: 'Fashion',
-      brand: 'StyleCo',
-      inStock: true,
-      isNew: true,
-      isSale: false,
-      images: ['https://images.unsplash.com/photo-1551028719-00167b16eac5?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'],
-      description: 'Premium leather jacket with modern design'
-    },
-    {
-      _id: '507f1f77bcf86cd799439014',
-      name: 'Organic Coffee Beans',
-      price: 24.99,
-      originalPrice: 29.99,
-      rating: 4.7,
-      numReviews: 89,
-      category: 'Food',
-      brand: 'BrewMaster',
-      inStock: true,
-      isNew: false,
-      isSale: true,
-      images: ['https://images.unsplash.com/photo-1559056199-641a0ac8b55e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'],
-      description: 'Single-origin organic coffee beans, medium roast'
-    },
-    {
-      _id: '507f1f77bcf86cd799439015',
-      name: 'Yoga Mat Pro',
-      price: 89.99,
-      originalPrice: null,
-      rating: 4.6,
-      numReviews: 167,
-      category: 'Sports',
-      brand: 'ZenFit',
-      inStock: false,
-      isNew: false,
-      isSale: false,
-      images: ['https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'],
-      description: 'Professional-grade yoga mat with superior grip'
-    },
-    {
-      _id: '507f1f77bcf86cd799439016',
-      name: 'Wireless Gaming Mouse',
-      price: 79.99,
-      originalPrice: 99.99,
-      rating: 4.4,
-      numReviews: 203,
-      category: 'Electronics',
-      brand: 'GamePro',
-      inStock: true,
-      isNew: false,
-      isSale: true,
-      images: ['https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'],
-      description: 'High-precision wireless gaming mouse with RGB lighting'
-    }
-  ]
-
-  const [products, setProducts] = useState(mockProducts)
-  const [loading, setLoading] = useState(false)
+  const [searchParams, setSearchParams] = useSearchParams()
+  
+  // State for products and loading
+  const [products, setProducts] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
+  
+  // State for pagination
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(1)
+  const [totalProducts, setTotalProducts] = useState(0)
+  
+  // State for filtering and sorting
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [selectedBrand, setSelectedBrand] = useState('all')
   const [priceRange, setPriceRange] = useState([0, 1000])
-  const [sortBy, setSortBy] = useState('name')
+  const [sortBy, setSortBy] = useState('newest')
   const [showFilters, setShowFilters] = useState(false)
   const [viewMode, setViewMode] = useState('grid') // 'grid' or 'list'
+
+  // Available options (will be loaded from API)
+  const [categories, setCategories] = useState([])
+  const [brands, setBrands] = useState([])
+
+  // Initialize filters from URL parameters and load initial data
+  useEffect(() => {
+    const categoryParam = searchParams.get('category')
+    const searchParam = searchParams.get('search')
+    const brandParam = searchParams.get('brand')
+    const sortParam = searchParams.get('sort')
+    
+    if (categoryParam) setSelectedCategory(categoryParam)
+    if (searchParam) setSearchQuery(searchParam)
+    if (brandParam) setSelectedBrand(brandParam)
+    if (sortParam) setSortBy(sortParam)
+    
+    // Load categories once
+    loadCategories()
+  }, [searchParams])
+
+  // Load products when filters change (including initial load)
+  useEffect(() => {
+    loadProducts()
+  }, [currentPage, searchQuery, selectedCategory, selectedBrand, priceRange, sortBy])
+
+  const loadCategories = async () => {
+    try {
+      const response = await productsAPI.getCategories()
+      if (response.success) {
+        setCategories(response.categories || [])
+      }
+    } catch (error) {
+      console.error('Error loading categories:', error)
+    }
+  }
+
+  const loadProducts = async () => {
+    try {
+      setLoading(true)
+      setError('')
+
+      const params = {
+        page: currentPage,
+        limit: 12,
+        sort: sortBy
+      }
+
+      // Add search query
+      if (searchQuery.trim()) {
+        params.keyword = searchQuery.trim()
+      }
+
+      // Add category filter
+      if (selectedCategory && selectedCategory !== 'all') {
+        params.category = selectedCategory
+      }
+
+      // Add brand filter
+      if (selectedBrand && selectedBrand !== 'all') {
+        params.brand = selectedBrand
+      }
+
+      // Add price range filter
+      if (priceRange[0] > 0) {
+        params.minPrice = priceRange[0]
+      }
+      if (priceRange[1] < 1000) {
+        params.maxPrice = priceRange[1]
+      }
+
+      const response = await productsAPI.getProducts(params)
+      
+      if (response.success) {
+        setProducts(response.products || [])
+        setTotalPages(response.pagination?.pages || 1)
+        setTotalProducts(response.total || 0)
+        
+        // Extract brands from products for filter
+        const uniqueBrands = [...new Set(response.products.map(p => p.brand).filter(Boolean))]
+        setBrands(uniqueBrands)
+      } else {
+        setError(response.message || 'Failed to load products')
+      }
+    } catch (error) {
+      console.error('Error loading products:', error)
+      setError('Failed to load products. Please try again.')
+    } finally {
+      setLoading(false)
+    }
+  }
   const [inStockOnly, setInStockOnly] = useState(false)
 
-  // Get unique categories and brands
-  const categories = useMemo(() => 
-    [...new Set(products.map(p => p.category))], [products]
-  )
-  
-  const brands = useMemo(() => 
-    [...new Set(products.map(p => p.brand))], [products]
-  )
+  // Handle search
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value)
+    setCurrentPage(1) // Reset to first page when searching
+    
+    // Update URL parameters
+    const newParams = new URLSearchParams(searchParams)
+    if (e.target.value.trim()) {
+      newParams.set('search', e.target.value.trim())
+    } else {
+      newParams.delete('search')
+    }
+    newParams.delete('page')
+    setSearchParams(newParams)
+  }
 
-  // Filter and sort products
-  const filteredProducts = useMemo(() => {
-    let filtered = products.filter(product => {
-      const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                           product.description.toLowerCase().includes(searchQuery.toLowerCase())
-      const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory
-      const matchesBrand = selectedBrand === 'all' || product.brand === selectedBrand
-      const matchesPrice = product.price >= priceRange[0] && product.price <= priceRange[1]
-      const matchesStock = !inStockOnly || product.inStock
-      
-      return matchesSearch && matchesCategory && matchesBrand && matchesPrice && matchesStock
-    })
+  // Handle filter changes
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category)
+    setCurrentPage(1)
+    
+    // Update URL parameters
+    const newParams = new URLSearchParams(searchParams)
+    if (category === 'all') {
+      newParams.delete('category')
+    } else {
+      newParams.set('category', category)
+    }
+    newParams.delete('page') // Reset page when filtering
+    setSearchParams(newParams)
+  }
 
-    // Sort products
-    filtered.sort((a, b) => {
-      switch (sortBy) {
-        case 'price-low':
-          return a.price - b.price
-        case 'price-high':
-          return b.price - a.price
-        case 'rating':
-          return b.rating - a.rating
-        case 'newest':
-          return b.isNew - a.isNew
-        case 'name':
-        default:
-          return a.name.localeCompare(b.name)
-      }
-    })
+  const handleBrandChange = (brand) => {
+    setSelectedBrand(brand)
+    setCurrentPage(1)
+    
+    // Update URL parameters
+    const newParams = new URLSearchParams(searchParams)
+    if (brand === 'all') {
+      newParams.delete('brand')
+    } else {
+      newParams.set('brand', brand)
+    }
+    newParams.delete('page')
+    setSearchParams(newParams)
+  }
 
-    return filtered
-  }, [products, searchQuery, selectedCategory, selectedBrand, priceRange, sortBy, inStockOnly])
+  const handleSortChange = (sort) => {
+    setSortBy(sort)
+    setCurrentPage(1)
+    
+    // Update URL parameters
+    const newParams = new URLSearchParams(searchParams)
+    newParams.set('sort', sort)
+    newParams.delete('page')
+    setSearchParams(newParams)
+  }
+
+  const handlePriceRangeChange = (range) => {
+    setPriceRange(range)
+    setCurrentPage(1)
+  }
 
   const clearFilters = () => {
     setSearchQuery('')
     setSelectedCategory('all')
     setSelectedBrand('all')
     setPriceRange([0, 1000])
-    setSortBy('name')
-    setInStockOnly(false)
+    setSortBy('newest')
+    setCurrentPage(1)
+  }
+
+  // Handle pagination
+  const handlePageChange = (page) => {
+    setCurrentPage(page)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   return (
@@ -231,7 +268,7 @@ const ProductsPage = () => {
                       type="text"
                       placeholder="Search products..."
                       value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
+                      onChange={handleSearch}
                       className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     />
                   </div>
@@ -244,12 +281,14 @@ const ProductsPage = () => {
                   </label>
                   <select
                     value={selectedCategory}
-                    onChange={(e) => setSelectedCategory(e.target.value)}
+                    onChange={(e) => handleCategoryChange(e.target.value)}
                     className="w-full p-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   >
                     <option value="all">All Categories</option>
                     {categories.map(category => (
-                      <option key={category} value={category}>{category}</option>
+                      <option key={category._id || category.name || category} value={category._id || category.name || category}>
+                        {category.name || category}
+                      </option>
                     ))}
                   </select>
                 </div>
@@ -261,7 +300,7 @@ const ProductsPage = () => {
                   </label>
                   <select
                     value={selectedBrand}
-                    onChange={(e) => setSelectedBrand(e.target.value)}
+                    onChange={(e) => handleBrandChange(e.target.value)}
                     className="w-full p-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   >
                     <option value="all">All Brands</option>
@@ -274,7 +313,7 @@ const ProductsPage = () => {
                 {/* Price Range */}
                 <div className="mb-6">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Price Range: ${priceRange[0]} - ${priceRange[1]}
+                    Price Range: ₹{priceRange[0]} - ₹{priceRange[1]}
                   </label>
                   <div className="flex gap-4">
                     <input
@@ -321,8 +360,13 @@ const ProductsPage = () => {
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                   <div className="flex items-center gap-4">
                     <span className="text-sm text-gray-600">
-                      {filteredProducts.length} products found
+                      {totalProducts} products found
                     </span>
+                    {currentPage > 1 && (
+                      <span className="text-sm text-gray-500">
+                        Page {currentPage} of {totalPages}
+                      </span>
+                    )}
                   </div>
 
                   <div className="flex items-center gap-4">
@@ -331,14 +375,16 @@ const ProductsPage = () => {
                       <ArrowsUpDownIcon className="h-5 w-5 text-gray-400" />
                       <select
                         value={sortBy}
-                        onChange={(e) => setSortBy(e.target.value)}
+                        onChange={(e) => handleSortChange(e.target.value)}
                         className="border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       >
-                        <option value="name">Name A-Z</option>
+                        <option value="newest">Newest First</option>
+                        <option value="name-a-z">Name A-Z</option>
+                        <option value="name-z-a">Name Z-A</option>
                         <option value="price-low">Price: Low to High</option>
                         <option value="price-high">Price: High to Low</option>
                         <option value="rating">Highest Rated</option>
-                        <option value="newest">Newest First</option>
+                        <option value="popularity">Most Popular</option>
                       </select>
                     </div>
 
@@ -366,7 +412,25 @@ const ProductsPage = () => {
                 <div className="flex justify-center py-20">
                   <LoadingSpinner size="lg" />
                 </div>
-              ) : filteredProducts.length === 0 ? (
+              ) : error ? (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="text-center py-20"
+                >
+                  <div className="bg-white rounded-2xl shadow-lg p-12">
+                    <div className="text-red-500 text-6xl mb-4">⚠️</div>
+                    <h3 className="text-xl font-semibold text-gray-900 mb-2">Error Loading Products</h3>
+                    <p className="text-gray-600 mb-6">{error}</p>
+                    <button
+                      onClick={loadProducts}
+                      className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                    >
+                      Try Again
+                    </button>
+                  </div>
+                </motion.div>
+              ) : products.length === 0 ? (
                 <motion.div
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -385,26 +449,83 @@ const ProductsPage = () => {
                   </div>
                 </motion.div>
               ) : (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.6, delay: 0.4 }}
-                  className={`grid gap-8 ${viewMode === 'grid' ? 'grid-cols-1 md:grid-cols-2 xl:grid-cols-3' : 'grid-cols-1'}`}
-                >
-                  <AnimatePresence>
-                    {filteredProducts.map((product, index) => (
-                      <motion.div
-                        key={product._id}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -20 }}
-                        transition={{ duration: 0.6, delay: index * 0.1 }}
-                      >
-                        <ProductCard product={product} viewMode={viewMode} />
-                      </motion.div>
-                    ))}
-                  </AnimatePresence>
-                </motion.div>
+                <>
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.6, delay: 0.4 }}
+                    className={`grid gap-8 ${viewMode === 'grid' ? 'grid-cols-1 md:grid-cols-2 xl:grid-cols-3' : 'grid-cols-1'}`}
+                  >
+                    <AnimatePresence>
+                      {products.map((product, index) => (
+                        <motion.div
+                          key={product._id}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -20 }}
+                          transition={{ duration: 0.6, delay: index * 0.1 }}
+                        >
+                          <ProductCard product={product} viewMode={viewMode} />
+                        </motion.div>
+                      ))}
+                    </AnimatePresence>
+                  </motion.div>
+
+                  {/* Pagination */}
+                  {totalPages > 1 && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.6, delay: 0.6 }}
+                      className="flex justify-center mt-12"
+                    >
+                      <div className="bg-white rounded-2xl shadow-lg p-6">
+                        <div className="flex items-center gap-2">
+                          {/* Previous button */}
+                          <button
+                            onClick={() => handlePageChange(currentPage - 1)}
+                            disabled={currentPage === 1}
+                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                              currentPage === 1
+                                ? 'text-gray-400 cursor-not-allowed'
+                                : 'text-gray-700 hover:bg-gray-100'
+                            }`}
+                          >
+                            Previous
+                          </button>
+
+                          {/* Page numbers */}
+                          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                            <button
+                              key={page}
+                              onClick={() => handlePageChange(page)}
+                              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                                currentPage === page
+                                  ? 'bg-blue-600 text-white'
+                                  : 'text-gray-700 hover:bg-gray-100'
+                              }`}
+                            >
+                              {page}
+                            </button>
+                          ))}
+
+                          {/* Next button */}
+                          <button
+                            onClick={() => handlePageChange(currentPage + 1)}
+                            disabled={currentPage === totalPages}
+                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                              currentPage === totalPages
+                                ? 'text-gray-400 cursor-not-allowed'
+                                : 'text-gray-700 hover:bg-gray-100'
+                            }`}
+                          >
+                            Next
+                          </button>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </>
               )}
             </div>
           </div>

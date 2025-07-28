@@ -5,6 +5,7 @@ import { Helmet } from 'react-helmet-async';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaPlus, FaMinus, FaTrash, FaShoppingBag, FaArrowLeft } from 'react-icons/fa';
 import { updateQuantity, removeFromCart, clearCart } from '../store/slices/cartSlice';
+import { formatCurrency } from '../utils/helpers';
 
 const CartPage = () => {
   const navigate = useNavigate();
@@ -127,11 +128,11 @@ const CartPage = () => {
                           </p>
                           <div className="flex items-center mt-2">
                             <span className="text-xl font-bold text-indigo-600">
-                              ${item.price}
+                              {formatCurrency(item.price)}
                             </span>
                             {item.originalPrice && item.originalPrice > item.price && (
                               <span className="ml-2 text-sm text-gray-500 line-through">
-                                ${item.originalPrice}
+                                {formatCurrency(item.originalPrice)}
                               </span>
                             )}
                           </div>
@@ -170,7 +171,7 @@ const CartPage = () => {
                         {/* Item Total */}
                         <div className="text-right min-w-0">
                           <p className="text-lg font-bold text-gray-900">
-                            ${(item.price * item.quantity).toFixed(2)}
+                            {formatCurrency(item.price * item.quantity)}
                           </p>
                         </div>
                       </div>
@@ -192,21 +193,21 @@ const CartPage = () => {
                 <div className="space-y-4 mb-6">
                   <div className="flex justify-between">
                     <span className="text-gray-600">Subtotal ({totalItems} items)</span>
-                    <span className="font-medium">${totalAmount.toFixed(2)}</span>
+                    <span className="font-medium">{formatCurrency(totalAmount)}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Shipping</span>
                     <span className="font-medium text-green-600">Free</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Tax</span>
-                    <span className="font-medium">${(totalAmount * 0.08).toFixed(2)}</span>
+                    <span className="text-gray-600">GST (18%)</span>
+                    <span className="font-medium">{formatCurrency(totalAmount * 0.18)}</span>
                   </div>
                   <hr className="border-gray-200" />
                   <div className="flex justify-between text-lg font-bold">
                     <span>Total</span>
                     <span className="text-indigo-600">
-                      ${(totalAmount + totalAmount * 0.08).toFixed(2)}
+                      {formatCurrency(totalAmount + totalAmount * 0.18)}
                     </span>
                   </div>
                 </div>
