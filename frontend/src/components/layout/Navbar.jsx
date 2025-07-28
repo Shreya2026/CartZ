@@ -261,13 +261,13 @@ const Navbar = () => {
                         >
                           Orders
                         </Link>
-                        {user?.role === 'admin' && (
+                        {user?.email === 'shreyanshisinghal210@gmail.com' && (
                           <Link
                             to="/admin"
                             onClick={() => setUserMenuOpen(false)}
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-150"
+                            className="block px-4 py-2 text-sm bg-purple-50 text-purple-700 hover:bg-purple-100 transition-colors duration-150 font-medium"
                           >
-                            Admin
+                            Admin Dashboard
                           </Link>
                         )}
                         <button
@@ -412,13 +412,13 @@ const Navbar = () => {
                     >
                       Wishlist
                     </Link>
-                    {user?.role === 'admin' && (
+                    {user?.email === 'shreyanshisinghal210@gmail.com' && (
                       <Link
                         to="/admin"
                         onClick={() => dispatch(setMobileMenuOpen(false))}
-                        className="block px-3 py-2 text-gray-700 hover:text-primary-600 hover:bg-gray-50 rounded-md transition-colors duration-200"
+                        className="block px-3 py-2 bg-purple-50 text-purple-700 hover:bg-purple-100 rounded-md transition-colors duration-200 font-medium"
                       >
-                        Admin Panel
+                        Admin Dashboard
                       </Link>
                     )}
                     <button

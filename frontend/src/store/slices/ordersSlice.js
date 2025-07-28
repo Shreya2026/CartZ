@@ -92,7 +92,7 @@ const ordersSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // Get My Orders
+      // Get All Orders
       .addCase(getMyOrders.pending, (state) => {
         state.loading = true
         state.error = null

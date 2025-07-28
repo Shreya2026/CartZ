@@ -50,7 +50,7 @@ const ProtectedRoute = ({ children, requireAuth = true, requireAdmin = false }) 
     return <Navigate to="/login" replace />
   }
 
-  if (requireAdmin && (!user || user.role !== 'admin')) {
+  if (requireAdmin && (!user || user.email !== 'shreyanshisinghal210@gmail.com')) {
     return <Navigate to="/" replace />
   }
 

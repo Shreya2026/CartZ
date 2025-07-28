@@ -133,7 +133,7 @@ const OrdersPage = () => {
     return (
       <>
         <Helmet>
-          <title>My Orders - CartZ</title>
+          <title>All Orders - CartZ</title>
         </Helmet>
         <div className="min-h-screen bg-gray-50 py-8">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -156,14 +156,14 @@ const OrdersPage = () => {
   return (
     <>
       <Helmet>
-        <title>My Orders - CartZ</title>
+        <title>All Orders - CartZ</title>
       </Helmet>
 
       <div className="min-h-screen bg-gray-50 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-3 mb-8">
             <FaShoppingBag className="text-2xl text-purple-600" />
-            <h1 className="text-3xl font-bold text-gray-900">My Orders</h1>
+            <h1 className="text-3xl font-bold text-gray-900">All Orders</h1>
           </div>
 
           {error && (
@@ -176,7 +176,7 @@ const OrdersPage = () => {
             <div className="bg-white rounded-lg shadow-sm p-12 text-center">
               <FaBox className="mx-auto text-6xl text-gray-300 mb-4" />
               <h3 className="text-xl font-semibold text-gray-900 mb-2">No Orders Yet</h3>
-              <p className="text-gray-600 mb-6">You haven't placed any orders yet. Start shopping to see your orders here!</p>
+              <p className="text-gray-600 mb-6">No orders have been placed on the website yet. Check back later!</p>
               <button
                 onClick={() => window.location.href = '/products'}
                 className="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition-colors"
@@ -207,6 +207,19 @@ const OrdersPage = () => {
                               {order.orderStatus?.charAt(0).toUpperCase() + order.orderStatus?.slice(1)}
                             </span>
                           </div>
+                          
+                          {/* User Info */}
+                          {order.user && (
+                            <div className="flex items-center gap-2 mb-3 text-sm">
+                              <div className="w-6 h-6 bg-purple-100 rounded-full flex items-center justify-center">
+                                <span className="text-purple-600 font-medium text-xs">
+                                  {order.user.name?.charAt(0)?.toUpperCase() || 'U'}
+                                </span>
+                              </div>
+                              <span className="text-gray-700 font-medium">{order.user.name}</span>
+                              <span className="text-gray-500">({order.user.email})</span>
+                            </div>
+                          )}
                           
                           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-gray-600">
                             <div className="flex items-center gap-2">

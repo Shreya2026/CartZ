@@ -85,26 +85,26 @@ router.post('/', protect, async (req, res) => {
   }
 });
 
-// @desc    Get user orders
+// @desc    Get all orders (visible to all users)
 // @route   GET /api/orders/myorders
-// @access  Private (Modified for testing - using default user)
+// @access  Private
 router.get('/myorders', async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * limit;
 
-    // Use default user ID for testing (same as checkout)
-    const userId = req.user?.id || req.user?._id || '600000000000000000000001';
-    console.log('MyOrders - userId:', userId);
+    // Get ALL orders from the website, not just user's orders
+    console.log('Fetching all orders for user view');
 
-    const orders = await Order.find({ user: userId })
+    const orders = await Order.find({})
+      .populate('user', 'name email')
       .populate('items.product', 'name images slug')
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit);
 
-    const total = await Order.countDocuments({ user: userId });
+    const total = await Order.countDocuments({});
 
     res.status(200).json({
       success: true,
