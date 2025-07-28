@@ -75,24 +75,24 @@ const HomePage = () => {
 
   const testimonials = [
     {
-      name: 'Sarah Johnson',
+      name: 'Priya Sharma',
       role: 'Fashion Enthusiast',
       content: 'CartZ has completely transformed my shopping experience. The quality is outstanding!',
-      avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80',
+      avatar: 'https://ui-avatars.com/api/?name=Priya+Sharma&background=8b5cf6&color=fff&size=100',
       rating: 5,
     },
     {
-      name: 'Mike Chen',
+      name: 'Arjun Patel',
       role: 'Tech Professional',
       content: 'Best electronics store online. Fast delivery and excellent customer service.',
-      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80',
+      avatar: 'https://ui-avatars.com/api/?name=Arjun+Patel&background=3b82f6&color=fff&size=100',
       rating: 5,
     },
     {
-      name: 'Emily Davis',
+      name: 'Kavya Reddy',
       role: 'Home Designer',
       content: 'Their home decor collection is amazing. I found everything I needed for my renovation.',
-      avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80',
+      avatar: 'https://ui-avatars.com/api/?name=Kavya+Reddy&background=ec4899&color=fff&size=100',
       rating: 5,
     },
   ]

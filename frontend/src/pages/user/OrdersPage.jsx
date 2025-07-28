@@ -312,158 +312,29 @@ const OrdersPage = () => {
 
         {/* Order Details Modal */}
         {showOrderDetails && selectedOrder && (
-          <>
-            {/* Print Styles */}
-            <style jsx>{`
-              @media print {
-                body * {
-                  visibility: hidden;
-                }
-                .print-area, .print-area * {
-                  visibility: visible;
-                }
-                .print-area {
-                  position: absolute;
-                  left: 0;
-                  top: 0;
-                  width: 100%;
-                  background: white;
-                  padding: 20px;
-                  font-size: 12px;
-                  line-height: 1.4;
-                }
-                .no-print {
-                  display: none !important;
-                }
-                .print-break {
-                  page-break-before: always;
-                }
-                .print-header {
-                  text-align: center;
-                  margin-bottom: 20px;
-                  border-bottom: 2px solid #000;
-                  padding-bottom: 10px;
-                }
-                .print-section {
-                  margin-bottom: 15px;
-                }
-                .print-table {
-                  width: 100%;
-                  border-collapse: collapse;
-                  margin-bottom: 15px;
-                }
-                .print-table th,
-                .print-table td {
-                  border: 1px solid #ddd;
-                  padding: 8px;
-                  text-align: left;
-                }
-                .print-table th {
-                  background-color: #f5f5f5;
-                  font-weight: bold;
-                }
-                .print-total {
-                  text-align: right;
-                  font-weight: bold;
-                  font-size: 14px;
-                }
-              }
-            `}</style>
-            
-            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-start justify-center p-4 pt-8 z-50 no-print">
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95, y: -20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95, y: -20 }}
-                className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[85vh] overflow-y-auto mt-4"
-              >
-                {/* Modal Header */}
-                <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between no-print">
-                  <div>
-                    <h2 className="text-2xl font-bold text-gray-900">Order Details</h2>
-                    <p className="text-sm text-gray-600">Order #{selectedOrder._id}</p>
-                  </div>
-                  <button
-                    onClick={handleCloseDetails}
-                    className="text-gray-400 hover:text-gray-600 text-2xl font-bold"
-                  >
-                    ×
-                  </button>
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-start justify-center p-4 pt-8 z-50">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: -20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: -20 }}
+              className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[85vh] overflow-y-auto mt-4"
+            >
+              {/* Modal Header */}
+              <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900">Order Details</h2>
+                  <p className="text-sm text-gray-600">Order #{selectedOrder._id}</p>
                 </div>
+                <button
+                  onClick={handleCloseDetails}
+                  className="text-gray-400 hover:text-gray-600 text-2xl font-bold"
+                >
+                  ×
+                </button>
+              </div>
 
-                {/* Print Area - This will be the only visible content when printing */}
-                <div className="print-area">
-                  {/* Print Header */}
-                  <div className="print-header">
-                    <h1 style={{ margin: 0, fontSize: '24px', fontWeight: 'bold' }}>CartZ</h1>
-                    <p style={{ margin: '5px 0 0 0', fontSize: '14px' }}>Invoice</p>
-                  </div>
-
-                  {/* Print Order Info */}
-                  <div className="print-section">
-                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '15px' }}>
-                      <div>
-                        <p><strong>Order ID:</strong> {selectedOrder._id}</p>
-                        <p><strong>Order Date:</strong> {formatDate(selectedOrder.createdAt)}</p>
-                        <p><strong>Status:</strong> {selectedOrder.orderStatus?.charAt(0).toUpperCase() + selectedOrder.orderStatus?.slice(1)}</p>
-                      </div>
-                      <div>
-                        <p><strong>Payment Method:</strong> {selectedOrder.paymentMethod?.replace('_', ' ')}</p>
-                        <p><strong>Order Number:</strong> {selectedOrder.orderNumber || 'N/A'}</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Print Shipping Address */}
-                  <div className="print-section">
-                    <h3 style={{ borderBottom: '1px solid #ddd', paddingBottom: '5px', marginBottom: '10px' }}>Shipping Address</h3>
-                    <p>{selectedOrder.shippingAddress?.street}</p>
-                    <p>{selectedOrder.shippingAddress?.city}, {selectedOrder.shippingAddress?.state} {selectedOrder.shippingAddress?.zipCode}</p>
-                    <p>{selectedOrder.shippingAddress?.country}</p>
-                    {selectedOrder.shippingAddress?.phone && <p>Phone: {selectedOrder.shippingAddress.phone}</p>}
-                  </div>
-
-                  {/* Print Items Table */}
-                  <div className="print-section">
-                    <h3 style={{ borderBottom: '1px solid #ddd', paddingBottom: '5px', marginBottom: '10px' }}>Order Items</h3>
-                    <table className="print-table">
-                      <thead>
-                        <tr>
-                          <th>Item</th>
-                          <th>Price</th>
-                          <th>Qty</th>
-                          <th>Total</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {selectedOrder.items?.map((item, index) => (
-                          <tr key={index}>
-                            <td>{item.name}</td>
-                            <td>₹{item.price?.toFixed(2)}</td>
-                            <td>{item.quantity}</td>
-                            <td>₹{(item.price * item.quantity)?.toFixed(2)}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-
-                  {/* Print Totals */}
-                  <div className="print-section print-total">
-                    <p>Subtotal: ₹{selectedOrder.itemsPrice?.toFixed(2)}</p>
-                    <p>GST (18%): ₹{selectedOrder.gstPrice?.toFixed(2) || selectedOrder.taxPrice?.toFixed(2) || '0.00'}</p>
-                    <p>Shipping: ₹{selectedOrder.shippingPrice?.toFixed(2)}</p>
-                    {selectedOrder.discountAmount > 0 && (
-                      <p>Discount: -₹{selectedOrder.discountAmount?.toFixed(2)}</p>
-                    )}
-                    <p style={{ fontSize: '16px', borderTop: '2px solid #000', paddingTop: '5px', marginTop: '10px' }}>
-                      <strong>Total: ₹{selectedOrder.totalPrice?.toFixed(2)}</strong>
-                    </p>
-                  </div>
-                </div>
-
-                {/* Modal Content - Visible on screen only */}
-                <div className="p-6 no-print">
+              {/* Modal Content */}
+              <div className="p-6">
                 {/* Order Status */}
                 <div className="bg-gray-50 rounded-lg p-4 mb-6">
                   <div className="flex items-center justify-between mb-4">
@@ -618,7 +489,6 @@ const OrdersPage = () => {
               </div>
             </motion.div>
           </div>
-          </>
         )}
       </div>
     </>

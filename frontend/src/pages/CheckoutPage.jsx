@@ -62,7 +62,7 @@ const CheckoutPage = () => {
     city: shippingAddress.city || '',
     state: shippingAddress.state || '',
     postalCode: shippingAddress.postalCode || '',
-    country: shippingAddress.country || '',
+    country: shippingAddress.country || 'IN',
     phone: shippingAddress.phone || '',
   });
 
@@ -212,7 +212,7 @@ const CheckoutPage = () => {
       paymentResult: paymentMethod === 'card' ? {
         status: 'completed',
         update_time: new Date().toISOString(),
-        email_address: 'customer@example.com'
+        email_address: 'customer@cartz.in'
       } : {}
     };
 
@@ -438,10 +438,10 @@ const CheckoutPage = () => {
                             required
                           >
                             <option value="">Select Country</option>
+                            <option value="IN">India</option>
                             <option value="US">United States</option>
                             <option value="CA">Canada</option>
                             <option value="UK">United Kingdom</option>
-                            <option value="IN">India</option>
                             <option value="AU">Australia</option>
                           </select>
                         </div>

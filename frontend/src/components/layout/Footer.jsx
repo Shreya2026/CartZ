@@ -115,15 +115,15 @@ const Footer = () => {
             <div className="space-y-3">
               <div className="flex items-center space-x-3">
                 <MapPinIcon className="h-5 w-5 text-primary-400" />
-                <span className="text-sm">123 Commerce St, Shopping City, SC 12345</span>
+                <span className="text-sm">Block B-403, Cyber Heights, DLF Phase 2, Sector 25, Gurugram, Haryana 122002, India</span>
               </div>
               <div className="flex items-center space-x-3">
                 <PhoneIcon className="h-5 w-5 text-primary-400" />
-                <span className="text-sm">+1 (555) 123-4567</span>
+                <span className="text-sm">+91 9876543210</span>
               </div>
               <div className="flex items-center space-x-3">
                 <EnvelopeIcon className="h-5 w-5 text-primary-400" />
-                <span className="text-sm">support@cartz.com</span>
+                <span className="text-sm">support@cartz.in</span>
               </div>
             </div>
 

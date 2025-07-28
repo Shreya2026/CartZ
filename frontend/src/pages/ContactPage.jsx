@@ -65,14 +65,14 @@ const ContactPage = () => {
     {
       icon: FaMapMarkerAlt,
       title: 'Address',
-      details: ['123 E-commerce Street', 'Digital City, DC 12345', 'United States'],
+      details: ['Block B-403, Cyber Heights', 'DLF Phase 2, Sector 25, Gurugram', 'Haryana 122002, India'],
       color: 'text-blue-600',
       bgColor: 'bg-blue-100',
     },
     {
       icon: FaPhone,
       title: 'Phone',
-      details: ['+1 (555) 123-4567', '+1 (555) 987-6543'],
+      details: ['+91 9876543210', '+91 8800226612'],
       color: 'text-green-600',
       bgColor: 'bg-green-100',
     },
@@ -86,7 +86,7 @@ const ContactPage = () => {
     {
       icon: FaClock,
       title: 'Business Hours',
-      details: ['Monday - Friday: 9:00 AM - 6:00 PM', 'Saturday: 10:00 AM - 4:00 PM', 'Sunday: Closed'],
+      details: ['Monday - Friday: 10:00 AM - 7:00 PM', 'Saturday: 10:00 AM - 6:00 PM', 'Sunday: 11:00 AM - 5:00 PM'],
       color: 'text-orange-600',
       bgColor: 'bg-orange-100',
     },
