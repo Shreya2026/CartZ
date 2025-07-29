@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema({
     public_id: String,
     url: {
       type: String,
-      default: 'https://res.cloudinary.com/demo/image/upload/v1/default-avatar.png'
+      default: 'https://ui-avatars.com/api/?name=User&background=6366f1&color=fff&size=200'
     }
   },
   role: {

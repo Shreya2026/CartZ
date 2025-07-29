@@ -8,8 +8,17 @@ const adminMiddleware = (req, res, next) => {
       })
     }
 
+    // Get admin email from environment variables
+    const adminEmail = process.env.ADMIN_EMAIL
+    
+    if (!adminEmail) {
+      return res.status(500).json({
+        success: false,
+        message: 'Server configuration error: Admin email not set.'
+      })
+    }
+
     // Check if user is admin
-    const adminEmail = 'shreyanshisinghal210@gmail.com'
     if (req.user.email !== adminEmail) {
       return res.status(403).json({
         success: false,
