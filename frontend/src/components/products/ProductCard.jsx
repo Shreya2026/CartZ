@@ -203,7 +203,7 @@ const ProductCard = ({ product, viewMode = 'grid' }) => {
           <div className="p-6">
             {/* Category */}
             <p className="text-sm text-purple-600 font-medium mb-2 uppercase tracking-wider">
-              {product.category}
+              {product.category?.name || product.category}
             </p>
             
             {/* Product Name */}

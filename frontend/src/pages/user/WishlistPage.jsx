@@ -31,7 +31,8 @@ const WishlistPage = () => {
   // Filter wishlist items
   const filteredItems = wishlistItems.filter(item => {
     const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase())
-    const matchesCategory = selectedCategory === 'all' || item.category === selectedCategory
+    const categoryName = item.category?.name || item.category
+    const matchesCategory = selectedCategory === 'all' || categoryName === selectedCategory
     return matchesSearch && matchesCategory
   })
 
@@ -51,7 +52,7 @@ const WishlistPage = () => {
   })
 
   // Get unique categories
-  const categories = [...new Set(wishlistItems.map(item => item.category))]
+  const categories = [...new Set(wishlistItems.map(item => item.category?.name || item.category).filter(Boolean))]
 
   const handleRemoveFromWishlist = (item) => {
     dispatch(toggleWishlistItem(item))
@@ -60,28 +61,21 @@ const WishlistPage = () => {
 
   const handleAddToCart = (item) => {
     dispatch(addToCart({
-      _id: item._id,
-      name: item.name,
-      price: item.price,
-      image: item.images?.[0],
+      product: item,
       quantity: 1
     }))
     toast.success('Added to cart!')
   }
 
   const handleAddAllToCart = () => {
-    sortedItems.forEach(item => {
-      if (item.inStock) {
-        dispatch(addToCart({
-          _id: item._id,
-          name: item.name,
-          price: item.price,
-          image: item.images?.[0],
-          quantity: 1
-        }))
-      }
+    const inStockItems = sortedItems.filter(item => (item.stock > 0))
+    inStockItems.forEach(item => {
+      dispatch(addToCart({
+        product: item,
+        quantity: 1
+      }))
     })
-    toast.success(`Added ${sortedItems.filter(item => item.inStock).length} items to cart!`)
+    toast.success(`Added ${inStockItems.length} items to cart!`)
   }
 
   const handleClearWishlist = () => {
@@ -105,9 +99,12 @@ const WishlistPage = () => {
             {/* Image */}
             <div className="relative w-48 h-48 overflow-hidden bg-gradient-to-br from-purple-50 to-pink-50 flex-shrink-0">
               <img
-                src={item.images?.[0] || '/placeholder-product.jpg'}
+                src={item.images?.[0]?.url || item.images?.[0] || '/placeholder-product.jpg'}
                 alt={item.name}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                onError={(e) => {
+                  e.target.src = '/placeholder-product.jpg'
+                }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </div>
@@ -118,7 +115,7 @@ const WishlistPage = () => {
                 <div className="flex items-start justify-between mb-2">
                   <div>
                     <p className="text-sm text-purple-600 font-medium uppercase tracking-wider">
-                      {item.category} • {item.brand}
+                      {item.category?.name || item.category} • {item.brand}
                     </p>
                     <Link 
                       to={`/products/${item._id}`}
@@ -151,11 +148,11 @@ const WishlistPage = () => {
                     )}
                   </div>
                   <div className={`px-3 py-1 rounded-full text-sm font-medium ${
-                    item.inStock 
+                    (item.inStock ?? (item.stock > 0))
                       ? 'bg-green-100 text-green-800' 
                       : 'bg-red-100 text-red-800'
                   }`}>
-                    {item.inStock ? 'In Stock' : 'Out of Stock'}
+                    {(item.inStock ?? (item.stock > 0)) ? 'In Stock' : 'Out of Stock'}
                   </div>
                 </div>
               </div>
@@ -163,16 +160,16 @@ const WishlistPage = () => {
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => handleAddToCart(item)}
-                  disabled={!item.inStock}
+                  disabled={!(item.inStock ?? (item.stock > 0))}
                   className={`flex-1 py-3 px-6 rounded-lg font-semibold transition-all duration-300 ${
-                    !item.inStock
+                    !(item.inStock ?? (item.stock > 0))
                       ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
                       : 'bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:from-purple-700 hover:to-pink-700'
                   }`}
                 >
                   <div className="flex items-center justify-center gap-2">
                     <ShoppingCartIcon className="h-5 w-5" />
-                    {item.inStock ? 'Add to Cart' : 'Out of Stock'}
+                    {(item.inStock ?? (item.stock > 0)) ? 'Add to Cart' : 'Out of Stock'}
                   </div>
                 </button>
                 
@@ -204,9 +201,12 @@ const WishlistPage = () => {
       >
         <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-purple-50 to-pink-50">
           <img
-            src={item.images?.[0] || '/placeholder-product.jpg'}
+            src={item.images?.[0]?.url || item.images?.[0] || '/placeholder-product.jpg'}
             alt={item.name}
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+            onError={(e) => {
+              e.target.src = '/placeholder-product.jpg'
+            }}
           />
           
           {/* Overlay Actions */}
@@ -220,9 +220,9 @@ const WishlistPage = () => {
               </Link>
               <button
                 onClick={() => handleAddToCart(item)}
-                disabled={!item.inStock}
+                disabled={!(item.inStock ?? (item.stock > 0))}
                 className={`p-3 backdrop-blur-sm rounded-full shadow-lg transition-colors ${
-                  item.inStock
+                  (item.inStock ?? (item.stock > 0))
                     ? 'bg-purple-600/90 text-white hover:bg-purple-700'
                     : 'bg-gray-400/90 text-gray-200 cursor-not-allowed'
                 }`}
@@ -245,18 +245,18 @@ const WishlistPage = () => {
           
           {/* Stock Status */}
           <div className={`absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-bold ${
-            item.inStock 
+            (item.inStock ?? (item.stock > 0))
               ? 'bg-green-500 text-white' 
               : 'bg-red-500 text-white'
           }`}>
-            {item.inStock ? 'In Stock' : 'Out of Stock'}
+            {(item.inStock ?? (item.stock > 0)) ? 'In Stock' : 'Out of Stock'}
           </div>
         </div>
 
         {/* Content */}
         <div className="p-6">
           <p className="text-sm text-purple-600 font-medium mb-2 uppercase tracking-wider">
-            {item.category}
+            {item.category?.name || item.category}
           </p>
           
           <Link 
@@ -280,14 +280,14 @@ const WishlistPage = () => {
             
             <button
               onClick={() => handleAddToCart(item)}
-              disabled={!item.inStock}
+              disabled={!(item.inStock ?? (item.stock > 0))}
               className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-300 ${
-                !item.inStock
+                !(item.inStock ?? (item.stock > 0))
                   ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
                   : 'bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:from-purple-700 hover:to-pink-700'
               }`}
             >
-              {item.inStock ? 'Add to Cart' : 'Out of Stock'}
+              {(item.inStock ?? (item.stock > 0)) ? 'Add to Cart' : 'Out of Stock'}
             </button>
           </div>
         </div>

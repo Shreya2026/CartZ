@@ -124,7 +124,7 @@ const CartPage = () => {
                             {item.name}
                           </h3>
                           <p className="text-gray-500 text-sm mt-1">
-                            {item.category}
+                            {item.category?.name || item.category}
                           </p>
                           <div className="flex items-center mt-2">
                             <span className="text-xl font-bold text-indigo-600">

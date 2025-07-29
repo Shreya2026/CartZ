@@ -513,7 +513,7 @@ const AdminDashboard = () => {
                             </div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                            {product.category}
+                            {product.category?.name || product.category}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                             {formatCurrency(product.price)}
