@@ -1,6 +1,7 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 
+// TODO: Add more spinner variants
 const LoadingSpinner = ({ size = 'md', color = 'primary', className = '' }) => {
   const sizeClasses = {
     xs: 'w-4 h-4',

@@ -14,71 +14,47 @@ import {
 
 const AboutPage = () => {
   const stats = [
-    { label: 'Happy Customers', value: '5L+', icon: UserGroupIcon },
-    { label: 'Products Available', value: '50K+', icon: ShoppingBagIcon },
-    { label: 'Cities Served', value: '200+', icon: GlobeAltIcon },
-    { label: 'Years of Excellence', value: '8+', icon: StarIcon },
+    { label: 'Products', value: '500+', icon: UserGroupIcon },
+    { label: 'Categories', value: '20+', icon: ShoppingBagIcon },
+    { label: 'Features', value: '15+', icon: GlobeAltIcon },
+    { label: 'Technologies', value: '10+', icon: StarIcon },
   ]
 
   const values = [
     {
       icon: ShoppingBagIcon,
-      title: 'Quality Products',
-      description: 'We curate only the finest products from trusted brands and suppliers worldwide.'
+      title: 'Modern Tech Stack',
+      description: 'Built with latest technologies including React 18, Node.js, and MongoDB.'
     },
     {
       icon: TruckIcon,
-      title: 'Fast Delivery',
-      description: 'Lightning-fast shipping with real-time tracking to get your orders to you quickly.'
+      title: 'Responsive Design',
+      description: 'Mobile-first approach ensuring great experience on all devices.'
     },
     {
       icon: ShieldCheckIcon,
-      title: 'Secure Shopping',
-      description: 'Your data and transactions are protected with enterprise-grade security.'
+      title: 'Secure Authentication',
+      description: 'JWT-based authentication with role-based access control.'
     },
     {
       icon: HeartIcon,
-      title: 'Customer First',
-      description: '24/7 customer support to ensure your shopping experience is always exceptional.'
+      title: 'User Experience',
+      description: 'Intuitive interface with smooth animations and interactions.'
     }
   ]
 
   const team = [
     {
-      name: 'Rajesh Sharma',
-      role: 'CEO & Founder',
-      image: 'https://ui-avatars.com/api/?name=Rajesh+Sharma&background=3b82f6&color=fff&size=128',
-      description: 'Visionary entrepreneur with 15+ years in Indian e-commerce. IIT Delhi alumnus.'
+      name: 'Shreya',
+      role: 'Full-stack Developer',
+      image: 'https://ui-avatars.com/api/?name=Shreya&background=3b82f6&color=fff&size=128',
+      description: 'Computer Science student passionate about web development and e-commerce.'
     },
     {
-      name: 'Priya Patel',
-      role: 'CTO',
-      image: 'https://ui-avatars.com/api/?name=Priya+Patel&background=8b5cf6&color=fff&size=128',
-      description: 'Tech innovator from IIT Bombay, leading India\'s digital transformation in retail.'
-    },
-    {
-      name: 'Arjun Gupta',
-      role: 'COO',
-      image: 'https://ui-avatars.com/api/?name=Arjun+Gupta&background=10b981&color=fff&size=128',
-      description: 'Operations expert ensuring seamless delivery across India. Former McKinsey consultant.'
-    },
-    {
-      name: 'Sneha Reddy',
-      role: 'Head of Design',
-      image: 'https://ui-avatars.com/api/?name=Sneha+Reddy&background=f59e0b&color=fff&size=128',
-      description: 'Award-winning designer creating beautiful experiences for Indian customers.'
-    },
-    {
-      name: 'Vikram Singh',
-      role: 'Head of Marketing',
-      image: 'https://ui-avatars.com/api/?name=Vikram+Singh&background=ef4444&color=fff&size=128',
-      description: 'Marketing strategist with deep understanding of Indian consumer behavior.'
-    },
-    {
-      name: 'Kavya Menon',
-      role: 'Head of Customer Success',
-      image: 'https://ui-avatars.com/api/?name=Kavya+Menon&background=6366f1&color=fff&size=128',
-      description: 'Customer advocate ensuring exceptional service across all Indian languages.'
+      name: 'Development Team',
+      role: 'Contributors',
+      image: 'https://ui-avatars.com/api/?name=Dev+Team&background=8b5cf6&color=fff&size=128',
+      description: 'Open source contributors helping build and improve CartZ.'
     }
   ]
 
@@ -106,8 +82,8 @@ const AboutPage = () => {
                 </span>
               </h1>
               <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                Redefining online shopping in India with premium products, exceptional service, 
-                and innovative technology since 2016. Made in India, for India.
+                A modern e-commerce platform built with MERN stack for online shopping.
+                Created as a learning project to demonstrate full-stack web development skills.
               </p>
             </motion.div>
           </div>
@@ -164,23 +140,19 @@ const AboutPage = () => {
             >
               <div className="prose prose-lg max-w-none text-gray-600">
                 <p className="text-xl leading-relaxed mb-6">
-                  CartZ began with a simple vision: to create the most delightful and trustworthy 
-                  online shopping experience for Indian customers. Founded in 2016 by a team of 
-                  passionate Indian entrepreneurs from IIT and IIM, we recognized the unique needs 
-                  of Indian consumers and the potential of India's growing digital economy.
+                  CartZ is a full-stack e-commerce application built to demonstrate modern 
+                  web development skills using the MERN stack. This project showcases 
+                  various technologies and best practices in full-stack development.
                 </p>
                 <p className="text-lg leading-relaxed mb-6">
-                  What started as a small startup in Bangalore with big dreams has grown into 
-                  India's premier e-commerce platform, serving customers across 200+ cities 
-                  from Kashmir to Kanyakumari. We've built our reputation on three core principles: 
-                  quality products, innovative technology, and exceptional customer service 
-                  tailored for Indian families.
+                  The application features a complete shopping experience including user 
+                  authentication, product browsing, cart management, order processing, 
+                  and an admin dashboard for content management.
                 </p>
                 <p className="text-lg leading-relaxed">
-                  Today, CartZ continues to lead India's digital commerce revolution, embracing 
-                  cutting-edge technologies like AI and machine learning while supporting local 
-                  artisans and 'Make in India' initiatives. Our mission remains unchanged: 
-                  making online shopping accessible, affordable, and delightful for every Indian.
+                  Built with React 18, Node.js, MongoDB, and modern tools like Redux Toolkit, 
+                  Tailwind CSS, and Framer Motion. The project demonstrates responsive design, 
+                  state management, API development, and database integration.
                 </p>
               </div>
             </motion.div>
@@ -197,10 +169,10 @@ const AboutPage = () => {
               viewport={{ once: true }}
               className="text-center mb-16"
             >
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Our Values</h2>
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Project Goals</h2>
               <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto mb-8"></div>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                These core values guide everything we do and shape every decision we make.
+                Key objectives and learning outcomes from building this e-commerce platform.
               </p>
             </motion.div>
 
@@ -287,17 +259,17 @@ const AboutPage = () => {
             >
               <LightBulbIcon className="h-16 w-16 text-white mx-auto mb-6" />
               <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-                Ready to Experience CartZ?
+                Try CartZ Demo
               </h2>
               <p className="text-xl text-blue-100 mb-8 leading-relaxed">
-                Join lakhs of satisfied customers across India and discover why CartZ is revolutionizing online shopping in Bharat.
+                Explore the features and functionality of this full-stack e-commerce application.
               </p>
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="bg-white text-blue-600 font-bold py-4 px-8 rounded-full text-lg hover:shadow-xl transition-all duration-300"
               >
-                Start Shopping Now
+                Start Exploring
               </motion.button>
             </motion.div>
           </div>

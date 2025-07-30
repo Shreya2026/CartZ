@@ -24,8 +24,8 @@ const app = express();
 
 // Rate limiting
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100 // limit each IP to 100 requests per windowMs
+  windowMs: 15 * 60 * 1000, 
+  max: 100 // TODO: Adjust for production
 });
 
 // Middleware
@@ -37,7 +37,7 @@ app.use(limiter);
 
 // CORS configuration - Allow all origins in development
 app.use(cors({
-  origin: true, // Allow all origins in development
+  origin: true, 
   credentials: true,
   optionsSuccessStatus: 200,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
@@ -63,7 +63,7 @@ app.get('/api/health', (req, res) => {
   res.status(200).json({ message: 'CartZ Backend is running!' });
 });
 
-// Test CORS endpoint
+// Test CORS endpoint - TODO: remove in production
 app.get('/api/test-cors', (req, res) => {
   res.json({ 
     message: 'CORS is working!',
@@ -78,6 +78,7 @@ app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ 
     message: 'Something went wrong!',
+    // Only show error details in development
     error: process.env.NODE_ENV === 'development' ? err.message : {}
   });
 });

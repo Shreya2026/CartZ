@@ -31,6 +31,7 @@ const ProductCard = ({ product, viewMode = 'grid' }) => {
     }))
     
     // Add a small delay for visual feedback
+    // TODO: Remove this setTimeout and use proper loading state
     setTimeout(() => setIsAddingToCart(false), 1500)
   }
 

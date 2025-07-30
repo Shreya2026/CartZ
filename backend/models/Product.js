@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
 
+// Review schema for product reviews
+// TODO: Add image upload support for reviews
 const reviewSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,

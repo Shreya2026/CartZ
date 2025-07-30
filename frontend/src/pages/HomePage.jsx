@@ -75,25 +75,25 @@ const HomePage = () => {
 
   const testimonials = [
     {
-      name: 'Priya Sharma',
-      role: 'Fashion Enthusiast',
-      content: 'CartZ has completely transformed my shopping experience. The quality is outstanding!',
-      avatar: 'https://ui-avatars.com/api/?name=Priya+Sharma&background=8b5cf6&color=fff&size=100',
+      name: 'Alex Johnson',
+      role: 'Customer',
+      content: 'Great platform with smooth user experience. Love the product variety!',
+      avatar: 'https://ui-avatars.com/api/?name=Alex+Johnson&background=8b5cf6&color=fff&size=100',
       rating: 5,
     },
     {
-      name: 'Arjun Patel',
-      role: 'Tech Professional',
-      content: 'Best electronics store online. Fast delivery and excellent customer service.',
-      avatar: 'https://ui-avatars.com/api/?name=Arjun+Patel&background=3b82f6&color=fff&size=100',
-      rating: 5,
+      name: 'Maria Garcia',
+      role: 'Shopper',
+      content: 'Fast delivery and good customer service. Would recommend to others.',
+      avatar: 'https://ui-avatars.com/api/?name=Maria+Garcia&background=3b82f6&color=fff&size=100',
+      rating: 4,
     },
     {
-      name: 'Kavya Reddy',
-      role: 'Home Designer',
-      content: 'Their home decor collection is amazing. I found everything I needed for my renovation.',
-      avatar: 'https://ui-avatars.com/api/?name=Kavya+Reddy&background=ec4899&color=fff&size=100',
-      rating: 5,
+      name: 'Sam Wilson',
+      role: 'User',
+      content: 'Easy to use website with good product search functionality.',
+      avatar: 'https://ui-avatars.com/api/?name=Sam+Wilson&background=ec4899&color=fff&size=100',
+      rating: 4,
     },
   ]
 
@@ -340,10 +340,10 @@ const HomePage = () => {
               className="text-center mb-16"
             >
               <h2 className="text-4xl font-bold text-gray-900 mb-4">
-                What Our Customers Say
+                Customer Reviews
               </h2>
               <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                Don't just take our word for it. Here's what real customers think about CartZ.
+                See what users think about the CartZ shopping experience.
               </p>
             </motion.div>
 

@@ -18,6 +18,10 @@ backend/dist/
 .env.test.local
 .env.production.local
 backend/.env
+
+# Personal notes (remove later)
+notes.txt
+temp/
 frontend/.env
 
 # Logs

@@ -13,7 +13,7 @@ export const formatNumber = (number) => {
   return new Intl.NumberFormat('en-IN').format(number)
 }
 
-// Format date (Indian format)
+// Format date - TODO: add more format options
 export const formatDate = (date, options = {}) => {
   const defaultOptions = {
     year: 'numeric',

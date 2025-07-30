@@ -1,39 +1,39 @@
-# CartZ - Premium E-commerce Store
+# CartZ - E-commerce Platform
 
-A full-stack MERN (MongoDB, Express.js, React, Node.js) e-commerce application built with modern technologies and eye-catching UI.
+A full-stack MERN e-commerce application for online shopping with modern web technologies.
 
-## 🚀 Features
+## Features
 
 ### Frontend Features
-- **Modern React 18** with Vite for lightning-fast development
-- **Redux Toolkit** for state management
-- **Tailwind CSS** for beautiful, responsive design
-- **Framer Motion** for smooth animations
-- **React Router** for client-side routing
-- **React Helmet Async** for SEO optimization
-- **Heroicons** for beautiful icons
-- Responsive design for all devices
-- Shopping cart with persistent storage
-- User authentication and authorization
+- React 18 with Vite for fast development
+- Redux Toolkit for state management
+- Tailwind CSS for styling
+- Framer Motion for animations
+- React Router for navigation
+- React Helmet Async for SEO
+- Heroicons for icons
+- Responsive design
+- Shopping cart with localStorage
+- User authentication
 - Product search and filtering
-- Wishlist functionality
+- Wishlist
 - User profiles and order history
-- Admin dashboard for management
+- Admin dashboard
 
 ### Backend Features
-- **Express.js** REST API
-- **MongoDB** with Mongoose ODM
-- **JWT** authentication with refresh tokens
-- **bcryptjs** for password hashing
-- **CORS** enabled for cross-origin requests
-- **Helmet** for security headers
-- **Rate limiting** for API protection
-- **Cookie parser** for secure token handling
-- File upload support with Multer
-- Comprehensive error handling
-- Input validation and sanitization
+- Express.js REST API
+- MongoDB with Mongoose
+- JWT authentication with refresh tokens
+- bcryptjs for password hashing
+- CORS enabled
+- Helmet for security
+- Rate limiting
+- Cookie parser for tokens
+- File upload with Multer
+- Error handling
+- Input validation
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 ### Frontend
 - React 18
@@ -56,7 +56,7 @@ A full-stack MERN (MongoDB, Express.js, React, Node.js) e-commerce application b
 - Helmet
 - CORS
 
-## 📦 Project Structure
+## Project Structure
 
 ```
 CartZ/
@@ -107,7 +107,7 @@ CartZ/
 └── README.md
 ```
 
-## 🚀 Quick Start
+## Setup
 
 ### Prerequisites
 - Node.js (v18 or higher)
@@ -118,8 +118,8 @@ CartZ/
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/cartz-ecommerce.git
-   cd cartz-ecommerce
+   git clone https://github.com/Shreya2026/CartZ.git
+   cd CartZ
    ```
 
 2. **Install dependencies for all packages**
@@ -167,7 +167,7 @@ npm run frontend
 npm run build
 ```
 
-## 🔗 API Endpoints
+## API Endpoints
 
 ### Authentication
 - `POST /api/auth/register` - Register new user
@@ -201,35 +201,35 @@ npm run build
 - `PUT /api/users/:id` - Update user
 - `DELETE /api/users/:id` - Delete user
 
-## 🎨 UI Components
+## UI Components
 
-The application includes a comprehensive set of reusable UI components:
+Main reusable components:
 
-- **Button** - Customizable button with multiple variants
-- **Card** - Container component with hover effects
-- **Modal** - Accessible modal dialogs
-- **Toast** - Notification system
-- **LoadingSpinner** - Loading indicators
-- **ProductCard** - Product display component
-- **ProductGrid** - Product listing layout
-- **ProductFilters** - Search and filtering interface
+- Button - Multiple variants
+- Card - Container with hover effects
+- Modal - Dialog system
+- Toast - Notifications
+- LoadingSpinner - Loading states
+- ProductCard - Product display
+- ProductGrid - Product listing
+- ProductFilters - Search and filtering
 
-## 🔐 Authentication & Authorization
+## Authentication
 
-- JWT-based authentication with access and refresh tokens
-- Role-based access control (User/Admin)
-- Protected routes on both frontend and backend
-- Secure cookie storage for tokens
-- Password hashing with bcryptjs
+- JWT tokens (access + refresh)
+- Role-based access (User/Admin)
+- Protected routes
+- Secure cookie storage
+- bcryptjs password hashing
 
-## 📱 Responsive Design
+## Responsive Design
 
-The application is fully responsive and optimized for:
+Optimized for:
 - Desktop (1024px+)
 - Tablet (768px - 1023px)
 - Mobile (320px - 767px)
 
-## 🚀 Deployment
+## Deployment
 
 ### Backend Deployment (Heroku/Railway/Render)
 1. Set environment variables
@@ -241,35 +241,31 @@ The application is fully responsive and optimized for:
 2. Set build command: `npm run build`
 3. Set publish directory: `dist`
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
+2. Create a feature branch (`git checkout -b feature/new-feature`)
+3. Commit your changes (`git commit -m 'Add new feature'`)
+4. Push to the branch (`git push origin feature/new-feature`)
 5. Open a Pull Request
 
-## 📄 License
+## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License.
 
-## 👥 Team
+## Team
 
-- **Development Team** - Full-stack MERN developers
-- **UI/UX Design** - Modern, responsive design
-- **Backend Architecture** - Scalable REST API
+- **Shreya** - Full-stack Developer
+- **Contributors** - Open source community
 
-## 📞 Support
+## Acknowledgments
 
-For support, email support@cartz.com or join our Slack channel.
-
-## 🙏 Acknowledgments
-
-- React team for the amazing framework
-- Tailwind CSS for the utility-first CSS framework
-- Framer Motion for beautiful animations
-- All the open-source contributors
+- React team
+- Tailwind CSS
+- Framer Motion
+- MongoDB team
+- Open source community
 
 ---
 
-**Made with ❤️ by the CartZ Team**
+Built with React and Node.js

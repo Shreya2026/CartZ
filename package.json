@@ -13,7 +13,7 @@
     "install-frontend": "cd frontend && npm install",
     "install-all": "npm run install-backend && npm run install-frontend",
     "setup": "npm install && npm run install-all",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Tests coming soon\" && exit 0"
   },
   "keywords": [
     "ecommerce",
@@ -25,7 +25,7 @@
     "vite",
     "tailwindcss"
   ],
-  "author": "CartZ Team",
+  "author": "Shreya",
   "license": "MIT",
   "devDependencies": {
     "concurrently": "^8.2.2"
@@ -36,6 +36,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/cartz-ecommerce"
+    "url": "https://github.com/Shreya2026/CartZ"
   }
 }

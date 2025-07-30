@@ -67,6 +67,7 @@ const Navbar = () => {
       navigate(`/products?search=${encodeURIComponent(searchQuery.trim())}`)
       setSearchQuery('')
     }
+    // TODO: Add search suggestions
   }
 
   const handleLogout = () => {

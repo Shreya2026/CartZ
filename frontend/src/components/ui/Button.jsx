@@ -1,6 +1,7 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 
+// Main button component - could probably be simplified
 const Button = ({ 
   children, 
   variant = 'primary', 

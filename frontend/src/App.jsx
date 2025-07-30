@@ -16,6 +16,8 @@ import Footer from './components/layout/Footer'
 import LoadingSpinner from './components/ui/LoadingSpinner'
 import PageLoader from './components/ui/PageLoader'
 
+// TODO: Add dark mode support
+// TODO: Implement proper error boundary
 // Lazy load pages for better performance
 const HomePage = React.lazy(() => import('./pages/HomePage'))
 const ProductsPage = React.lazy(() => import('./pages/ProductsPage'))
@@ -102,6 +104,8 @@ function App() {
     dispatch(loadUser())
     // Load cart from localStorage
     dispatch(loadCartFromStorage())
+    
+    // TODO: Add error boundary for better error handling
   }, [dispatch])
 
   if (authLoading) {

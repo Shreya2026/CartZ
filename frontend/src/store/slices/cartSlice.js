@@ -15,7 +15,8 @@ const loadStoredCart = () => {
       }
     }
   } catch (error) {
-    console.error('Error loading cart from localStorage:', error)
+    // Sometimes localStorage data gets corrupted, just reset it
+    console.warn('Error loading cart from localStorage:', error)
   }
   
   return {
