@@ -4,19 +4,19 @@ import api from './api'
 export const productAPI = {
   // Get all products with filters
   getProducts: async (params = {}) => {
-    const response = await api.get('/api/products', { params })
+    const response = await api.get('/products', { params })
     return response.data
   },
 
   // Get single product
   getProduct: async (id) => {
-    const response = await api.get(`/api/products/${id}`)
+    const response = await api.get(`/products/${id}`)
     return response.data
   },
 
   // Get featured products
   getFeaturedProducts: async (limit = 8) => {
-    const response = await api.get('/api/products/featured/list', { 
+    const response = await api.get('/products/featured/list', { 
       params: { limit } 
     })
     return response.data
@@ -24,7 +24,7 @@ export const productAPI = {
 
   // Get new arrivals
   getNewArrivals: async (limit = 8) => {
-    const response = await api.get('/api/products/new/arrivals', { 
+    const response = await api.get('/products/new/arrivals', { 
       params: { limit } 
     })
     return response.data
@@ -32,13 +32,13 @@ export const productAPI = {
 
   // Add product review
   addReview: async (productId, reviewData) => {
-    const response = await api.post(`/api/products/${productId}/reviews`, reviewData)
+    const response = await api.post(`/products/${productId}/reviews`, reviewData)
     return response.data
   },
 
   // Get product reviews
   getReviews: async (productId, params = {}) => {
-    const response = await api.get(`/api/products/${productId}/reviews`, { params })
+    const response = await api.get(`/products/${productId}/reviews`, { params })
     return response.data
   },
 }
@@ -47,13 +47,13 @@ export const productAPI = {
 export const categoryAPI = {
   // Get all categories
   getCategories: async () => {
-    const response = await api.get('/api/categories')
+    const response = await api.get('/categories')
     return response.data
   },
 
   // Get single category
   getCategory: async (id) => {
-    const response = await api.get(`/api/categories/${id}`)
+    const response = await api.get(`/categories/${id}`)
     return response.data
   },
 }
@@ -89,37 +89,37 @@ export const orderAPI = {
 export const userAPI = {
   // Get wishlist
   getWishlist: async () => {
-    const response = await api.get('/api/users/wishlist')
+    const response = await api.get('/users/wishlist')
     return response.data
   },
 
   // Add to wishlist
   addToWishlist: async (productId) => {
-    const response = await api.post(`/api/users/wishlist/${productId}`)
+    const response = await api.post(`/users/wishlist/${productId}`)
     return response.data
   },
 
   // Remove from wishlist
   removeFromWishlist: async (productId) => {
-    const response = await api.delete(`/api/users/wishlist/${productId}`)
+    const response = await api.delete(`/users/wishlist/${productId}`)
     return response.data
   },
 
   // Add address
   addAddress: async (addressData) => {
-    const response = await api.post('/api/users/addresses', addressData)
+    const response = await api.post('/users/addresses', addressData)
     return response.data
   },
 
   // Update address
   updateAddress: async (addressId, addressData) => {
-    const response = await api.put(`/api/users/addresses/${addressId}`, addressData)
+    const response = await api.put(`/users/addresses/${addressId}`, addressData)
     return response.data
   },
 
   // Delete address
   deleteAddress: async (addressId) => {
-    const response = await api.delete(`/api/users/addresses/${addressId}`)
+    const response = await api.delete(`/users/addresses/${addressId}`)
     return response.data
   },
 }
@@ -128,31 +128,31 @@ export const userAPI = {
 export const paymentAPI = {
   // Get payment methods
   getPaymentMethods: async () => {
-    const response = await api.get('/api/payments/methods')
+    const response = await api.get('/payments/methods')
     return response.data
   },
 
   // Process payment
   processPayment: async (paymentData) => {
-    const response = await api.post('/api/payments/process', paymentData)
+    const response = await api.post('/payments/process', paymentData)
     return response.data
   },
 
   // Validate payment details
   validatePayment: async (paymentData) => {
-    const response = await api.post('/api/payments/validate', paymentData)
+    const response = await api.post('/payments/validate', paymentData)
     return response.data
   },
 
   // Calculate shipping
   calculateShipping: async (items, address) => {
-    const response = await api.post('/api/payments/shipping', { items, shippingAddress: address })
+    const response = await api.post('/payments/shipping', { items, shippingAddress: address })
     return response.data
   },
 
   // Calculate tax
   calculateTax: async (items, address) => {
-    const response = await api.post('/api/payments/tax', { items, shippingAddress: address })
+    const response = await api.post('/payments/tax', { items, shippingAddress: address })
     return response.data
   },
 }
@@ -161,37 +161,37 @@ export const paymentAPI = {
 export const authAPI = {
   // Login
   login: async (credentials) => {
-    const response = await api.post('/api/auth/login', credentials)
+    const response = await api.post('/auth/login', credentials)
     return response.data
   },
 
   // Register
   register: async (userData) => {
-    const response = await api.post('/api/auth/register', userData)
+    const response = await api.post('/auth/register', userData)
     return response.data
   },
 
   // Get current user
   getCurrentUser: async () => {
-    const response = await api.get('/api/auth/me')
+    const response = await api.get('/auth/me')
     return response.data
   },
 
   // Update profile
   updateProfile: async (profileData) => {
-    const response = await api.put('/api/auth/profile', profileData)
+    const response = await api.put('/auth/profile', profileData)
     return response.data
   },
 
   // Change password
   changePassword: async (passwordData) => {
-    const response = await api.put('/api/auth/change-password', passwordData)
+    const response = await api.put('/auth/change-password', passwordData)
     return response.data
   },
 
   // Logout
   logout: async () => {
-    const response = await api.post('/api/auth/logout')
+    const response = await api.post('/auth/logout')
     return response.data
   },
 }
